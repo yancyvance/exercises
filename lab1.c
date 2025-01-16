@@ -8,7 +8,8 @@
 
 void display_datetime(cdatetime_t *dt) {
     /* This function prints out the entire details of dt using printf().
-     * It follows the format: Month dd, yyyy HH:MM:SS
+     * It follows the format: Month dd, yyyy HH:MM:SS (HH is in 24 hour format 0-23)
+     * For example: January 01, 2025 13:05:45
      * For the month, it should display the complete month name
      * where the first letter is capitalized while the remaining
      * letters are in lower-case.
