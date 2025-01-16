@@ -1,6 +1,10 @@
 #include <stdio.h>
 
 // define the 3 structures here, namely cdate_t, ctime_t, and cdatetime_t
+// cdate_t will have 3 int members, namely: month, day, year
+// ctime_t will have 3 int members, namely: hour, minute, second
+// cdatetime_t will have 2 members, namely: date and time, with types cdate_t and ctime_t, respectively
+
 // TODO 1: complete the code
 
 
