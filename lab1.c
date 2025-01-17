@@ -20,7 +20,7 @@ void display_datetime(cdatetime_t *dt) {
      * Separate the day and year by a comma.
      * For the day, hour, minute, and second components, display
      * a leading zero if there is only a single digit. For example:
-     * 5 should be displayed as 05; but 15 should be displayed as 15.
+     * 5 should be displayed as 05; but 45 should be displayed as 45.
      * Lastly, end with the newline character (\n).
     */
 
