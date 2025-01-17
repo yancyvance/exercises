@@ -46,12 +46,13 @@ int compare_datetimes(cdatetime_t *dt1, cdatetime_t *dt2) {
 int main(void) {
     cdatetime_t dt1;
     cdatetime_t dt2;
-    int entries_count;
+    int N_test_cases;
     
-    // ask the user how many lines or entries to process
-    scanf("%d", &entries_count);
+    // ask the user how many test cases (lines or entries) to process
+    scanf("%d", &N_test_cases);
 
-    for(int i = 0; i < entries_count; i++) {
+    for(int i = 0; i < N_test_cases; i++) {
+        // For each test case (or line)
         // Read the user input and assign them to their corresponding locations in the struct
         // Expect 12 ints for each line in the following order (month day year hour minute second) (month day year hour minute second).
         // The first 6 ints will be the information for dt1 while the next 6 ints will be the information for dt2.
