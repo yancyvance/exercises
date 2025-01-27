@@ -2,14 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#define INPUT_FILE_NAME "hw1_data.txt"
+#define INPUT_FILE_NAME "data.txt"
 #define MAX_NAME_LENGTH 255
+
+// Student Name:
 
 // TODO 1: define two structures here
 // the first structure will be called card_t with two components, namely: suit (char) and rank (int)
+// suit will always contain a capital letter indicating the card's suit (possible values are: C, D, H, S)
+// rank will be a whole number between 1-13, inclusive representing the card's rank 1=Ace, 2=2, ..., 11=Jack, 12, Queen, 13=King
 // the second structure will be called player_t with three components, namely: name (char*), card_count (int), and list_of_cards (card_t*)
+// name is a string that will be dynamically allocated with a length of n+1 (where n is the number of characters in the name)
+// card_count is a whole number which corresponds to the number of cards that this player has, it will be non-negative
+// list_of_cards is a dynamic list of card_t which will be dynamically allocated; the number of slots is determined by the person's card_count
 
 // define here
+
 
 
 
@@ -156,6 +164,7 @@ player_t *load_file(FILE *file_ptr, int *count_of_players) {
 }
 
 
+#ifndef F1
 player_t *create_player_list(int list_count) {
     // TODO 2: This function accepts the number of slots (count)
     // that needs to be allocated for a dynamic list of players;
@@ -164,8 +173,10 @@ player_t *create_player_list(int list_count) {
     // in short, it returns a pointer to the list
 
 }
+#endif
 
 
+#ifndef F2
 void initialize_player(player_t *player, char *name, int card_count) {
     // TODO 3: This function accepts a pointer to a player, a string representing
     // the player's name, and the count of cards this player has
@@ -174,21 +185,25 @@ void initialize_player(player_t *player, char *name, int card_count) {
     // of this player given the number of slots
 
 }
+#endif
 
 
+#ifndef F3
 void set_player_card_info_at(player_t *player, int card_position, char suit, int rank) {
-    // TODO 4A: this function accepts a pointer to a player, the position of the card in the list
+    // TODO 4: this function accepts a pointer to a player, the position of the card in the list
     // that needs to be set, the suit and the rank information of that card
     // this will simply set the value of the suit and the rank
     // of the card at a given location in the list of cards of
     // a player; we can assume that the list is already existing
     // and the card_position is valid
 
-    // TODO 4B: Ensure that the suit is in upper case
+    // NOTE: Ensure that the suit is stored in upper case
 
 }
+#endif
 
 
+#ifndef F4
 void process_list_of_players(player_t *player_list, int list_count) {
     // TODO 5: Complete the following function; this function receives
     // a dynamic list of players and the count of players in the list
@@ -196,10 +211,13 @@ void process_list_of_players(player_t *player_list, int list_count) {
     // and display the information of each player
     // add an extra space in between player information
     // you are required to do a call to display_player_information() here
+    // NOTE: you will only get 50% credit if you do not call display_player_information()
 
 }
+#endif
 
 
+#ifndef F5
 void display_player_information(player_t *player) {
     // TODO 6: Complete the following function
     // displays information of a single player
@@ -219,10 +237,13 @@ void display_player_information(player_t *player) {
     // the total rank is simply the sum of
     // the rank values of all the cards of the player
     // you are required to do a call to print_card_detail() here
+    // NOTE: you will only get 50% credit if you do not call print_card_detail()
 
 }
+#endif
 
 
+#ifndef F6
 void print_card_detail(card_t *card) {
     // TODO 7: this function accepts a pointer to a card and displays its information
     // It should display the suit of the card followed by a single
@@ -233,14 +254,17 @@ void print_card_detail(card_t *card) {
     // Lastly, add a newline character at the end
 
 }
+#endif
 
 
+#ifndef F7
 void cleanup(player_t *player_list, int list_count) {
     // TODO 8: this function accepts a dynamic list of players and the count
     // Your task is to complete this function such that it properly deallocates
     // all memory associated with the heap space of type player_t
 
 }
+#endif
 
 
 // DO NOT MODIFY THIS PORTION
