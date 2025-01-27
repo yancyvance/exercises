@@ -222,8 +222,8 @@ void process_list_of_players(player_t *player_list, int list_count) {
 
 #ifndef F5
 void display_player_information(player_t *player) {
-    // TODO 6: Complete the following function
-    // displays information of a single player
+    // TODO 6: This function accepts a pointer to a player_t
+    // it displays information of a single player
     // computation of the total rank should be done here
     // Refer to the following for the formatting requirements
 
@@ -237,6 +237,9 @@ void display_player_information(player_t *player) {
         Total Rank: <total>
     */
 
+    // when listing the cards of the player,
+    // the order simply follows how it is currently
+    // stored in the list_of_cards of the player;
     // the total rank is simply the sum of
     // the rank values of all the cards of the player
     // you are required to do a call to print_card_detail() here
