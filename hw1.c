@@ -7,8 +7,8 @@
 
 // COP 3502C Spring 2025
 // Student Name:
-// File Name: pa1_surname.c
-// NOTE: File name should be in lowercase. You must remove any whitespaces or dashes from your surname.
+// File Name: pa1_yoursurname.c
+// NOTE: Rename to use your actual surname. File name should be in lowercase. You must remove any whitespaces or dashes from your surname.
 
 // TODO 1: define two structures here
 // the first structure will be called card_t with two components, namely: suit (char) and rank (int)
