@@ -195,7 +195,7 @@ void process_list_of_players(player_t *player_list, int list_count) {
     // and display the information of each player
     // add an extra space in between player information
     // you are required to do a call to display_player_information() here
-    
+
 }
 
 
@@ -214,10 +214,11 @@ void display_player_information(player_t *player) {
         <S> <R>
         Total Rank: <total>
     */
-    
+
     // the total rank is simply the sum of
     // the rank values of all the cards of the player
-    
+    // you are required to do a call to print_card_detail() here
+
 }
 
 
