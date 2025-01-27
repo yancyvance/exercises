@@ -5,7 +5,7 @@
 #define INPUT_FILE_NAME "data.txt"
 #define MAX_NAME_LENGTH 255
 
-// TODO: define two structures here
+// TODO 1: define two structures here
 // the first structure will be called card_t with two components, namely: suit (char) and rank (int)
 // the second structure will be called player_t with three components, namely: name (char*), card_count (int), and list_of_cards (card_t*)
 
@@ -157,7 +157,7 @@ player_t *load_file(FILE *file_ptr, int *count_of_players) {
 
 
 player_t *create_player_list(int list_count) {
-    // TODO: This function accepts the number of slots (count)
+    // TODO 2: This function accepts the number of slots (count)
     // that needs to be allocated for a dynamic list of players;
     // dynamically allocate a list of players with a given count
     // afterward, it returns the dynamically allocated list
@@ -167,7 +167,7 @@ player_t *create_player_list(int list_count) {
 
 
 void initialize_player(player_t *player, char *name, int card_count) {
-    // TODO: This function accepts a pointer to a player, a string representing
+    // TODO 3: This function accepts a pointer to a player, a string representing
     // the player's name, and the count of cards this player has
     // this function sets the name and the card count of the player
     // additionally, it should dynamically allocate the list of cards
@@ -177,20 +177,20 @@ void initialize_player(player_t *player, char *name, int card_count) {
 
 
 void set_player_card_info_at(player_t *player, int card_position, char suit, int rank) {
-    // TODO: this function accepts a pointer to a player, the position of the card in the list
+    // TODO 4A: this function accepts a pointer to a player, the position of the card in the list
     // that needs to be set, the suit and the rank information of that card
     // this will simply set the value of the suit and the rank
     // of the card at a given location in the list of cards of
     // a player; we can assume that the list is already existing
     // and the card_position is valid
 
-    // TODO: Ensure that the suit is in upper case
+    // TODO 4B: Ensure that the suit is in upper case
 
 }
 
 
 void process_list_of_players(player_t *player_list, int list_count) {
-    // TODO: Complete the following function; this function receives
+    // TODO 5: Complete the following function; this function receives
     // a dynamic list of players and the count of players in the list
     // You have to iterate through the list of players
     // and display the information of each player
@@ -201,7 +201,7 @@ void process_list_of_players(player_t *player_list, int list_count) {
 
 
 void display_player_information(player_t *player) {
-    // TODO: Complete the following function
+    // TODO 6: Complete the following function
     // displays information of a single player
     // computation of the total rank should be done here
     // Refer to the following for the formatting requirements
@@ -224,7 +224,7 @@ void display_player_information(player_t *player) {
 
 
 void print_card_detail(card_t *card) {
-    // TODO: this function accepts a pointer to a card and displays its information
+    // TODO 7: this function accepts a pointer to a card and displays its information
     // It should display the suit of the card followed by a single
     // space then the numerical rank of the card. Format the rank
     // such that it has a width of 2 and is aligned right.
@@ -236,7 +236,7 @@ void print_card_detail(card_t *card) {
 
 
 void cleanup(player_t *player_list, int list_count) {
-    // TODO: this function accepts a dynamic list of players and the count
+    // TODO 8: this function accepts a dynamic list of players and the count
     // Your task is to complete this function such that it properly deallocates
     // all memory associated with the heap space of type player_t
 
