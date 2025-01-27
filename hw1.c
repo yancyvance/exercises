@@ -6,6 +6,8 @@
 #define MAX_NAME_LENGTH 255
 
 // Student Name:
+// File Name: pa1_surname.c
+// NOTE: File name should be in lowercase. You must remove any whitespaces or dashes from your surname.
 
 // TODO 1: define two structures here
 // the first structure will be called card_t with two components, namely: suit (char) and rank (int)
