@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#define INPUT_FILE_NAME "data.txt"
+#define INPUT_FILE_NAME "pa1_data.txt"
 #define MAX_NAME_LENGTH 255
 
 // COP 3502C Spring 2025
