@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #define INPUT_FILE_NAME "data.txt"
+#define MAX_NAME_LENGTH 255
 
 // TODO: define two structures here
 // the first structure will be called card_t with two components, namely: suit (char) and rank (int)
@@ -94,7 +95,7 @@ player_t *load_file(FILE *file_ptr, int *count_of_players) {
     // this function will build the list of persons based on the file
     // the address is where we will set the value
     // we can assume that the name will have a maximum of 254 characters
-    char name_temp[255];
+    char name_temp[MAX_NAME_LENGTH];
 
     // store the number of players into the variable
     // passed to this function by reference
