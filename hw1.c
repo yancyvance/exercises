@@ -15,7 +15,7 @@
 
 // DO NOT MODIFY THIS PORTION
 // function prototypes defined here
-// the function definition are located below the main function
+// the function definitions are located below the main function
 player_t *load_file(FILE *, int *);
 player_t *create_player_list(int);
 void initialize_player(player_t *, char *, int);
