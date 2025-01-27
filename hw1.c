@@ -5,6 +5,7 @@
 #define INPUT_FILE_NAME "data.txt"
 #define MAX_NAME_LENGTH 255
 
+// COP 3502C Spring 2025
 // Student Name:
 // File Name: pa1_surname.c
 // NOTE: File name should be in lowercase. You must remove any whitespaces or dashes from your surname.
