@@ -166,7 +166,8 @@ player_t *create_player_list(int list_count) {
 
 
 void initialize_player(player_t *player, char *name, int card_count) {
-    // TODO: Define function
+    // TODO: This function accepts a pointer to a player, a string representing
+    // the player's name, and the count of cards this player has
     // this function sets the name and the card count of the player
     // additionally, it should dynamically allocate the list of cards
     // of this player given the number of slots
