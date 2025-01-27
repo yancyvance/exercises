@@ -223,7 +223,7 @@ void display_player_information(player_t *player) {
 
 
 void print_card_detail(card_t *card) {
-    // TODO: this function displays the information of the card
+    // TODO: this function accepts a pointer to a card and displays its information
     // It should display the suit of the card followed by a single
     // space then the numerical rank of the card. Format the rank
     // such that it has a width of 2 and is aligned right.
@@ -242,6 +242,7 @@ void cleanup(player_t *player_list, int list_count) {
 }
 
 
+// DO NOT MODIFY THIS PORTION
 void trim_string(char *str) {
     // helper function that will remove the extra new line
     // added from reading the input file
