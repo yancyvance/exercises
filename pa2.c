@@ -568,7 +568,7 @@ void display_player_information(player_t *player) {
 
 int compare_card_nodes(LLNode *node1, LLNode *node2) {
     // TODO 8: This is a helper function that accepts two pointers to two nodes and returns an integer
-    // basically, this function determines which of the two nodes go first if were
+    // basically, this function determines which of the two nodes go first if we were
     // to arrange them; in short, we are trying to compare two nodes
     // this returns -1 if node1 has a card that has a lesser value compared to node2
     // it returns 1 if node1 has a card that has a higher value compared to node2
