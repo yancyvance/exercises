@@ -11,7 +11,7 @@
 // Student Name:
 // File Name: pa2_yoursurname.c
 // NOTE: Rename to use your actual surname. File name should be in lowercase. You must remove any whitespaces or dashes from your surname.
-// DO NOT ADD / MODIFY / REMOVE other parts that do not have any TODO in it. Do not remove the TODO comments as well as this will affect the grading 
+// DO NOT ADD / MODIFY / REMOVE other parts that do not have any TODO in it. Do not remove the TODO comments as well as this will affect the grading. 
 
 
 typedef struct card_s {
