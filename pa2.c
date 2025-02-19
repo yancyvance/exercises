@@ -357,6 +357,9 @@ void destroy_player(player_t *player) {
 
     // destroy the list
     destroy_linked_list(player->list_of_cards);
+
+    // deallocate player
+    free(player);
 }
 
 
