@@ -465,6 +465,10 @@ void distribute_draw_pile(GameBoard *board) {
 
         // check first if there is an actual card node
         if(card_node != NULL) {
+            // print the details
+            printf("Giving to Player %s the Card ", board->players[for_player]->name);
+            print_card_detail(&card_node->card);
+
             // insert; actually should not be an issue at this point but to be safe
             give_card_node_to_player(board->players[for_player], card_node);
         }
