@@ -433,6 +433,8 @@ void cleanup(GameBoard *board) {
 
 
 void print_game_status(GameBoard *board) {
+    printf("Current Game Status\n");
+
     // print all the information about the players
     printf("There are %d Players:\n", board->player_count);
     for(int i = 0; i < board->player_count; i++) {
