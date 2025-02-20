@@ -26,7 +26,7 @@ typedef struct LLNode_s {
 } LLNode;
 
 typedef struct LList_s {
-    LLNode *head;               // // A pointer to the linked list's head node, or NULL if list is empty.
+    LLNode *head;               // A pointer to the linked list's head node, or NULL if list is empty.
 } LList;
 
 typedef struct player_s {
