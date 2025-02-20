@@ -8,36 +8,37 @@
 #define INPUT_FILE_NAME "pa2_data.txt"
 
 // COP 3502C Spring 2025
-// Student Name:
+// Student Name: TODO_your_name_here
 // File Name: pa2_yoursurname.c
-// NOTE: Rename to use your actual surname. File name should be in lowercase. You must remove any whitespaces or dashes from your surname.
-// DO NOT ADD / MODIFY / REMOVE other parts that do not have any TODO in it. Do not remove the TODO comments as well as this will affect the grading. 
+// Note: Rename to use your actual surname. File name should be in lowercase.
+// You must remove any whitespaces or dashes from your surname.
+// Note: **do not** modify or remove TODO comments
 
 
 typedef struct card_s {
-    char suit;                  // the card's suit (possible values: C, D, H, S
-    int rank;                   // the card's rank (possible values: 1-13, inclusive)
+    char suit;                  // The card's suit (possible values: C, D, H, S).
+    int rank;                   // The card's rank (possible values: 1-13, inclusive).
 } card_t;
 
 typedef struct LLNode_s {
-    card_t card;                // a card_t struct representing the data being stored by this node
-    struct LLNode_s *next;      // a pointer reference to the next node
+    card_t card;                // Data stored in this node (a card).
+    struct LLNode_s *next;      // A pointer reference to the next node, or NULL if it is the last element in the list.
 } LLNode;
 
 typedef struct LList_s {
-    LLNode *head;               // a pointer to the linked list's head node
+    LLNode *head;               // // A pointer to the linked list's head node, or NULL if list is empty.
 } LList;
 
 typedef struct player_s {
-    char *name;                 // dynamically allocated string indicating the player's name
-    LList *list_of_cards;       // a pointer to a linked list that holds all of the player's cards
+    char *name;                 // Dynamically allocated string of the player's name.
+    LList *list_of_cards;       // Pointer to a linked list that holds all of the player's cards.
 } player_t;
 
 typedef struct GameBoard_s {
-    int player_count;           // a count indicating the number of players in the game
-    player_t **players;         // a pointer to a dynamic array of pointers to a struct (player_t)
-    LList *draw_pile;           // a pointer to a linked list that will serve as the draw pile of cards to be distributed
-    LList *discard_pile;        // a pointer to a linked list that will serve as the discard pile of cards
+    int player_count;           // The number of players in the game.
+    player_t **players;         // A dynamic array of pointers to player_t.
+    LList *draw_pile;           // Pointer to a linked list for the draw pile, from which cards will be dealt.
+    LList *discard_pile;        // Pointer to a linked list for the discard pile, where cards will be discarded.
 } GameBoard;
 
 
@@ -59,6 +60,7 @@ void cleanup(GameBoard *);
 
 void print_game_status(GameBoard *);
 void distribute_draw_pile(GameBoard *);
+void discard_all_cards(GameBoard *);
 void give_card_node_to_player(player_t *, LLNode *);
 
 int is_list_empty(LList *);
@@ -72,6 +74,9 @@ void print_card_detail(card_t *);
 void display_player_information(player_t *);
 int compare_card_nodes(LLNode *, LLNode *);
 void trim_string(char *);
+
+void reverse_card_pile(LList *);
+void combine_linked_lists(LList *, LList *);
 
 
 
@@ -126,6 +131,17 @@ int main(void) {
     distribute_draw_pile(board);
 
     // print the status of the game board after distributing the cards
+    print_game_status(board);
+
+    // have the players return all the cards to the board's discard pile
+    // we do this in the following sequence (order): player 1, player 2, and so on
+    // for each player, the player returns or puts one card at a time to the discard pile
+    // essentially, when the player is done returning all the cards, it will be
+    // in reversed order in the discard pile
+    printf("Discarding All Cards.\n");
+    discard_all_cards(board);
+
+    // print the status of the game board after all players discarded their cards
     print_game_status(board);
 
 
@@ -246,15 +262,20 @@ GameBoard * init_game_board(int count_of_players) {
  * It keeps track of the first element of the list which is referred to as the head.
  * Because the linked list is initially empty, head should be set to NULL.
  * @param None
- * @return A pointer to a LList, or NULL if there is a problem.
+ * @return A pointer to a LList, or NULL if unsuccessful.
  */
 LList * create_linked_list() {
+    // TODO 1 START
     // TODO 1: This function dynamically creates an empty linked list
     // check if the dynamic allocation was successful or not; if it was unsuccessful, return NULL
     // set the head pointer to NULL
     // afterward, return the linked list
 
-    
+
+
+
+
+    // TODO 1 END
 }
 
 
@@ -320,12 +341,17 @@ player_t * create_player(char *name) {
 
 
 player_t ** create_list_of_players(int count_of_players) {
+    // TODO 2 START
     // TODO 2: This function accepts a number indicating the
     // number of slots (count of players) to dynamically allocate
     // for an array of pointers to a struct (player_t*)
     // this function returns a pointer to this dynamic array
 
 
+
+
+
+    // TODO 2 END
 }
 
 
@@ -336,12 +362,17 @@ player_t ** create_list_of_players(int count_of_players) {
  * @return None
  */
 void destroy_linked_list(LList *list) {
+    // TODO 3 START
     // TODO 3: This function accepts a pointer to a linked list
     // it then deallocates or frees up all the memory spaces
     // that were allocated to all of its nodes and afterward,
     // to the linked list itself
 
-    
+
+
+
+
+    // TODO 3 END
 }
 
 
@@ -371,6 +402,7 @@ void destroy_player(player_t *player) {
  * @return None
  */
 void destroy_list_of_players(player_t **players, int size) {
+    // TODO 4 START
     // TODO 4: This function accepts a pointer to a dynamic array of pointers to a struct (player_t)
     // and a number corresponding to the number of slots of this dynamic array of pointers
     // this function then deallocates or frees up all the memory spaces
@@ -378,6 +410,10 @@ void destroy_list_of_players(player_t **players, int size) {
     // to the dynamic array itself
 
 
+
+
+
+    // TODO 4 END
 }
 
 
@@ -436,6 +472,29 @@ void distribute_draw_pile(GameBoard *board) {
 }
 
 
+void discard_all_cards(GameBoard *board) {
+    // go through each player
+    for(int i = 0; i < board->player_count; i++) {
+        // print who is returning the pile to the discard pile
+        printf("Player %s is Discarding Cards\n", board->players[i]->name);
+
+        // reverse the current pile of cards of this player
+        reverse_card_pile(board->players[i]->list_of_cards);
+
+        // print what is being returned and in which order
+        print_linked_list(board->players[i]->list_of_cards);
+
+        // remove all the pile of cards from the player's list
+        // and transfer them to the game board's discard pile
+        combine_linked_lists(board->discard_pile, board->players[i]->list_of_cards);
+
+        // clear this player's list of cards because all the cards
+        // are going to be transferred to the game board's discard pile
+        board->players[i]->list_of_cards->head = NULL;
+    }
+}
+
+
 void give_card_node_to_player(player_t *player, LLNode *node) {
     // assume that these were allocated already
     add_node_to_list_proper(player->list_of_cards, node);
@@ -455,11 +514,21 @@ int is_list_empty(LList *list) {
 
 
 int get_linked_list_size(LList *list) {
-    // TODO 5: This function accepts a pointer to a linked list
+    // This function accepts a pointer to a linked list
     // and returns a number corresponding to the number of nodes
     // or elements this list currently has
 
-    
+    // return how many nodes there are in the linked list
+    int count = 0;
+
+    LLNode *ptr = list->head;
+
+    while(ptr != NULL) {
+        count++;
+        ptr = ptr->next;
+    }
+
+    return count;
 }
 
 
@@ -517,7 +586,8 @@ void add_node_to_list(LList *list, LLNode *node) {
  * @return None
  */
 void add_node_to_list_proper(LList *list, LLNode *node) {
-    // TODO 6: This function accepts a pointer to a linked list and a pointer to a node
+    // TODO 5 START
+    // TODO 5: This function accepts a pointer to a linked list and a pointer to a node
     // that needs to be added to the linked list
     // this function ensures that the node is going to be added
     // or inserted in its proper location; essentially, after calling this function,
@@ -525,7 +595,11 @@ void add_node_to_list_proper(LList *list, LLNode *node) {
     // Hint: this function can be easily implemented if you use the helper
     // function compare_card_nodes()
 
-    
+
+
+
+
+    // TODO 5 END
 }
 
 
@@ -538,13 +612,18 @@ void add_node_to_list_proper(LList *list, LLNode *node) {
  * @return A pointer to a LLNode struct, or NULL if LList is empty.
  */
 LLNode * get_first_card_node_from_pile(LList *list) {
-    // TODO 7: This function accepts a pointer to a linked list from which
+    // TODO 6 START
+    // TODO 6: This function accepts a pointer to a linked list from which
     // we will be removing the first element of; in the event that the list is currently empty,
     // simply return a NULL; otherwise, after removing this first element
     // this function returns a pointer to this node
     // Hint: you have to do some other operations to ensure the integrity of your linked list
 
 
+
+
+
+    // TODO 6 END
 }
 
 
@@ -569,8 +648,16 @@ void display_player_information(player_t *player) {
 }
 
 
+
+/**
+ * @brief Compare two card nodes.
+ * For card comparisons, use card rank then card suit (alphabetically).
+ * E.g. S2 < H3, because rank of 2 < rank of 3.
+ * E.g. C3 < S3, because ranks are tied, and suit 'C' comes before suit 'S'.
+ */
 int compare_card_nodes(LLNode *node1, LLNode *node2) {
-    // TODO 8: This is a helper function that accepts two pointers to two nodes and returns an integer
+    // TODO 7 START
+    // TODO 7: This is a helper function that accepts two pointers to two nodes and returns an integer
     // basically, this function determines which of the two nodes go first if we were
     // to arrange them; in short, we are trying to compare two nodes
     // this returns -1 if node1 has a card that has a lesser value compared to node2
@@ -582,7 +669,11 @@ int compare_card_nodes(LLNode *node1, LLNode *node2) {
     // for example: C3 S3 (3 Clubs goes first, followed by 3 Spades; alphabetically C goes first compared to S)
     // you can assume for this activity that all cards will be unique; for other cases, you can safely return 0
 
-  
+
+
+
+
+    // TODO 7 END
 }
 
 
@@ -593,4 +684,52 @@ void trim_string(char *str) {
     if (len > 0 && str[len - 1] == '\n') {
         str[len - 1] = '\0';
     }
+}
+
+
+void reverse_card_pile(LList *list) {
+    // TODO 8 START
+    // TODO 8: This function accepts a pointer to a linked list
+    // it then reverses all the elements of this linked list
+    // ensure that the pointer to the head of this list is updated
+
+
+
+
+
+    // TODO 8 END
+}
+
+
+void combine_linked_lists(LList *list1, LList *list2) {
+    // this is a helper function that will append list2
+    // to list1
+
+    // check if list1 is empty
+    if( is_list_empty(list1) ) {
+        // check if list2 is not empty
+        if( !is_list_empty(list2) ) {
+            list1->head = list2->head;
+        }
+
+        return;
+    }
+
+    // if list2 is empty, there is nothing to do
+    if( is_list_empty(list2) ) {
+        return;
+    }
+
+    // if list1 is not empty, go to the last element of list1
+    // then connect list2 to it
+    LLNode *ptr;
+    ptr = list1->head;
+
+    // go to the last element of list1
+    while(ptr->next != NULL) {
+        ptr = ptr->next;
+    }
+
+    // set the next to the first element of list2
+    ptr->next = list2->head;
 }
