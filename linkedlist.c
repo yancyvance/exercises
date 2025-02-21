@@ -33,6 +33,7 @@ LLNode * get_element_at(LList *, int);
 void insert_new_element_at_existing_list_non_zero_pos(LList *, int, int);
 void insert_new_element_at_existing_list_zero_pos(LList *, int, int);
 void insert_new_element_at(LList *, int, int);
+void traverse_list_recursive(LLNode *);
 
 
 /*
@@ -94,7 +95,12 @@ int main(void) {
 
 
     // check the list again
+    printf("Iterative Version:\n");
     traverse_list(list);
+
+    printf("Recursive Version:\n");
+    // try the recursive version
+    traverse_list_recursive(list->head);
 
 
     // insert at a certain location
@@ -449,4 +455,18 @@ void insert_new_element_at(LList *list, int pos, int val) {
     else {
         insert_new_element_at_existing_list_non_zero_pos(list, pos, val);
     }
+}
+
+
+void traverse_list_recursive(LLNode *node) {
+    if(node == NULL) {
+        // perhaps the new line?
+        printf("\n");
+        return;
+    }
+
+    // print the values
+    printf("%d ", node->data);
+    // recursive call to next node
+    traverse_list_recursive(node->next);
 }
