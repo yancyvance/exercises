@@ -16,6 +16,140 @@ typedef struct LList_s {
 } LList;
 
 
+// function prototypes
+int is_empty(LList *);
+int get_size(LList *);
+void traverse_list_existing_list(LList *);
+void traverse_list_empty_list(LList *);
+void traverse_list(LList *);
+void add_new_element_existing_list(LList *, int);
+void add_new_element_empty_list(LList *, int);
+void add_new_element(LList *, int);
+LLNode * search_list(LList *, int );
+LLNode * remove_element_existing_list_not_first_node(LList *, int);
+LLNode * remove_element_existing_list_first_node(LList *, int);
+LLNode * remove_element(LList *, int);
+LLNode * get_element_at(LList *, int);
+void insert_new_element_at_existing_list_non_zero_pos(LList *, int, int);
+void insert_new_element_at_existing_list_zero_pos(LList *, int, int);
+void insert_new_element_at(LList *, int, int);
+
+
+/*
+    The functions you want to use are:
+        int is_empty(LList *);
+        int get_size(LList *);
+        void traverse_list(LList *);
+        void add_new_element(LList *, int);
+        LLNode * search_list(LList *, int );
+        LLNode * remove_element(LList *, int);
+        LLNode * get_element_at(LList *, int);
+        void insert_new_element_at(LList *, int, int);
+
+    The other functions are helper functions that
+    accounts for certain scenarios. The functions above
+    call these helper functions based on the scenario.
+*/
+
+
+int main(void) {
+    // dynamically allocate a linked list
+    LList *list = malloc(sizeof(LList));
+
+    // set the head to NULL
+    // because the list is empty
+    list->head = NULL;
+
+    // check the list first
+    traverse_list(list);
+
+
+    // add nodes
+    add_new_element(list, 10);
+    add_new_element(list, 20);
+    add_new_element(list, 30);
+
+
+    // check the list first
+    traverse_list(list);
+
+
+    LLNode *tmp = remove_element(list, 30);
+
+    // deallocate
+    free(tmp);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+    // insert at a certain location
+    insert_new_element_at(list, 2, 90);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+    // insert at a certain location
+    insert_new_element_at(list, 0, 100);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+    // deallocate all
+    tmp = remove_element(list, 10);
+    free(tmp);
+
+    // check the list again
+    traverse_list(list);
+
+    tmp = remove_element(list, 20);
+    free(tmp);
+
+    // check the list again
+    traverse_list(list);
+
+    tmp = remove_element(list, 90);
+    free(tmp);
+
+    // check the list again
+    traverse_list(list);
+
+
+    tmp = remove_element(list, 100);
+    free(tmp);
+
+    // check the list again
+    traverse_list(list);
+
+    // insert at a certain location
+    insert_new_element_at(list, 0, 80);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+    tmp = remove_element(list, 80);
+    free(tmp);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+    // deallocate the linked list
+    free(list);
+
+
+    return 0;
+}
+
+
 
 int is_empty(LList *list) {
     // check if there is a head node
@@ -310,106 +444,4 @@ void insert_new_element_at(LList *list, int pos, int val) {
     else {
         insert_new_element_at_existing_list_non_zero_pos(list, pos, val);
     }
-}
-
-
-
-
-
-
-int main(void) {
-    // dynamically allocate a linked list
-    LList *list = malloc(sizeof(LList));
-
-    // set the head to NULL
-    // because the list is empty
-    list->head = NULL;
-
-    // check the list first
-    traverse_list(list);
-
-
-    // add nodes
-    add_new_element(list, 10);
-    add_new_element(list, 20);
-    add_new_element(list, 30);
-
-
-    // check the list first
-    traverse_list(list);
-
-
-    LLNode *tmp = remove_element(list, 30);
-
-    // deallocate
-    free(tmp);
-
-
-    // check the list again
-    traverse_list(list);
-
-
-    // insert at a certain location
-    insert_new_element_at(list, 2, 90);
-
-
-    // check the list again
-    traverse_list(list);
-
-
-    // insert at a certain location
-    insert_new_element_at(list, 0, 100);
-
-
-    // check the list again
-    traverse_list(list);
-
-
-    // deallocate all
-    tmp = remove_element(list, 10);
-    free(tmp);
-
-    // check the list again
-    traverse_list(list);
-
-    tmp = remove_element(list, 20);
-    free(tmp);
-
-    // check the list again
-    traverse_list(list);
-
-    tmp = remove_element(list, 90);
-    free(tmp);
-
-    // check the list again
-    traverse_list(list);
-
-
-    tmp = remove_element(list, 100);
-    free(tmp);
-
-    // check the list again
-    traverse_list(list);
-
-    // insert at a certain location
-    insert_new_element_at(list, 0, 80);
-
-
-    // check the list again
-    traverse_list(list);
-
-
-    tmp = remove_element(list, 80);
-    free(tmp);
-
-
-    // check the list again
-    traverse_list(list);
-
-
-    // deallocate the linked list
-    free(list);
-
-
-    return 0;
 }
