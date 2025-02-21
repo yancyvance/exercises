@@ -287,13 +287,7 @@ void insert_new_element_at_existing_list_zero_pos(LList *list, int pos, int val)
 void insert_new_element_at(LList *list, int pos, int val) {
     // check if pos is 0 or not
     if(pos == 0) {
-        // check if list is empty
-        if(is_empty(list)) {
-            add_new_element_empty_list(list, val);
-        }
-        else {
-            insert_new_element_at_existing_list_zero_pos(list, pos, val);
-        }
+        insert_new_element_at_existing_list_zero_pos(list, pos, val);
     }
     else {
         insert_new_element_at_existing_list_non_zero_pos(list, pos, val);
@@ -345,6 +339,14 @@ int main(void) {
     traverse_list(list);
 
 
+    // insert at a certain location
+    insert_new_element_at(list, 0, 100);
+
+
+    // check the list again
+    traverse_list(list);
+
+
     // deallocate all
     tmp = remove_element(list, 10);
     free(tmp);
@@ -363,6 +365,32 @@ int main(void) {
 
     // check the list again
     traverse_list(list);
+
+
+    tmp = remove_element(list, 100);
+    free(tmp);
+
+    // check the list again
+    traverse_list(list);
+
+    // insert at a certain location
+    insert_new_element_at(list, 0, 80);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+    tmp = remove_element(list, 80);
+    free(tmp);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+    // deallocate the linked list
+    free(list);
 
 
     return 0;
