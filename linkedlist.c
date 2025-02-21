@@ -258,9 +258,16 @@ LLNode * get_element_at(LList *list, int pos) {
 void insert_new_element_at_existing_list_non_zero_pos(LList *list, int pos, int val) {
     LLNode *ptr;
     ptr = list->head;
+    // index variable
     int i = 0;
 
     while(ptr != NULL) {
+        // if the next i will be the correct position
+        // where to put the node, stop here
+        // because we want ptr to point to the node
+        // that comes before i+1 position
+        // since we are updating that node's next
+        // component to point to the newly created node
         if(i+1 == pos) {
             LLNode *tmp = malloc(sizeof(LLNode));
             tmp->data = val;
@@ -277,9 +284,16 @@ void insert_new_element_at_existing_list_non_zero_pos(LList *list, int pos, int 
 
 
 void insert_new_element_at_existing_list_zero_pos(LList *list, int pos, int val) {
+    // this new node will become the new head of the list
     LLNode *tmp = malloc(sizeof(LLNode));
     tmp->data = val;
+
+    // next node of this new node will be whatever
+    // used to be the head of the list
+    // it can be an actual node OR NULL (empty list)
     tmp->next = list->head;
+
+    // list will have a new head
     list->head = tmp;
 }
 
