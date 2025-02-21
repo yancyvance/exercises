@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Sample C Implementation of a Singly Linked List.
+// This combines all the codes covered during the lecture.
+// Please report any bug you may find.
+// This code was last updated on 2025-02-21.
 
 typedef struct LLNode_s {
     int data;
