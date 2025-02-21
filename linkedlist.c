@@ -36,7 +36,7 @@ void insert_new_element_at(LList *, int, int);
 
 
 /*
-    The functions you want to use are:
+    The primary functions you want to use are:
         int is_empty(LList *);
         int get_size(LList *);
         void traverse_list(LList *);
@@ -49,6 +49,11 @@ void insert_new_element_at(LList *, int, int);
     The other functions are helper functions that
     accounts for certain scenarios. The functions above
     call these helper functions based on the scenario.
+
+    You can actually consolidate these helper functions
+    into a single primary function. I intentionally
+    chose this approach to demonstrate that certain
+    operations behave differently based on the scenario.
 */
 
 
