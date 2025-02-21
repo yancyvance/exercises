@@ -459,6 +459,8 @@ void insert_new_element_at(LList *list, int pos, int val) {
 
 
 void traverse_list_recursive(LLNode *node) {
+    // if we are already pointing to a NULL
+    // we have already reached the end of the list
     if(node == NULL) {
         // perhaps the new line?
         printf("\n");
@@ -468,5 +470,7 @@ void traverse_list_recursive(LLNode *node) {
     // print the values
     printf("%d ", node->data);
     // recursive call to next node
+    // essentially, traverse the node that
+    // comes after the current node
     traverse_list_recursive(node->next);
 }
