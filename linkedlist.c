@@ -493,28 +493,28 @@ void insert_new_element_at(LList *list, int pos, int val) {
 }
 
 
-void traverse_list_recursive(LLNode *node) {
+void traverse_list_recursive(LLNode *ptr) {
     // if we are already pointing to a NULL
     // we have already reached the end of the list
-    if(node == NULL) {
+    if(ptr == NULL) {
         // perhaps the new line?
         printf("\n");
         return;
     }
 
     // print the values
-    printf("%d ", node->data);
+    printf("%d ", ptr->data);
     // recursive call to next node
     // essentially, traverse the node that
     // comes after the current node
-    traverse_list_recursive(node->next);
+    traverse_list_recursive(ptr->next);
 }
 
 
-void add_new_element_recursive(LLNode **node, int val) {
+void add_new_element_recursive(LLNode **ptr, int val) {
     // check first if this node is NULL
     // if it is, then it was because the list is empty
-    if(*node == NULL) {
+    if(*ptr == NULL) {
         // create a new node
         LLNode *tmp = malloc(sizeof(LLNode));
         // set the data and the next components
@@ -523,17 +523,17 @@ void add_new_element_recursive(LLNode **node, int val) {
         tmp->next = NULL;
         // update the old last node so that it now knows
         // that it has a node after it (tmp)
-        *node = tmp;
+        *ptr = tmp;
 
         return;
     }
 
     // otherwise, process and proceed until
     // the second to the last node is reached
-    if((*node)->next != NULL) {
+    if((*ptr)->next != NULL) {
         // we pass the address of this node since
         // we want to update this
-        add_new_element_recursive(&(*node)->next, val);
+        add_new_element_recursive(&(*ptr)->next, val);
     }
     else {
         // if it is, then add the node then return
@@ -547,28 +547,28 @@ void add_new_element_recursive(LLNode **node, int val) {
         tmp->next = NULL;
         // update the old last node so that it now knows
         // that it has a node after it (tmp)
-        (*node)->next = tmp;
+        (*ptr)->next = tmp;
     }
 }
 
 
-LLNode * remove_element_recursive(LLNode **node, int query) {
+LLNode * remove_element_recursive(LLNode **ptr, int query) {
     // check first if this node is NULL
     // if it is, then it was because the list is empty
-    if(*node == NULL) {
+    if(*ptr == NULL) {
         // this means the list is empty, return NULL
         return NULL;
     }
     else {
         // if we are looking for the head
-        if((*node)->data == query) {
+        if((*ptr)->data == query) {
             LLNode *tmp;
-            tmp = *node;
+            tmp = *ptr;
 
             // to indicate that removing this node
             // will remove the current head, therefore
             // the list will have a new head
-            (*node) = (*node)->next;
+            (*ptr) = (*ptr)->next;
 
             // return a reference to this node
             return tmp;
@@ -577,16 +577,16 @@ LLNode * remove_element_recursive(LLNode **node, int query) {
 
     // otherwise, process and proceed until
     // the second to the last node is reached
-    if((*node)->next != NULL) {
+    if((*ptr)->next != NULL) {
         // check if this is what we want to delete
-        if((*node)->next->data == query) {
+        if((*ptr)->next->data == query) {
             // use a temporary pointer to refer
             // to the node that will be removed
-            LLNode *tmp = (*node)->next;
+            LLNode *tmp = (*ptr)->next;
 
             // remove the node from the list and
             // update the links
-            (*node)->next = (*node)->next->next;
+            (*ptr)->next = (*ptr)->next->next;
 
             // simply just set the next pointer
             tmp->next = NULL;
@@ -596,7 +596,7 @@ LLNode * remove_element_recursive(LLNode **node, int query) {
         }
 
         // proceed and keep finding the element
-        return remove_element_recursive(&(*node)->next, query);
+        return remove_element_recursive(&(*ptr)->next, query);
     }
 
     return NULL;
