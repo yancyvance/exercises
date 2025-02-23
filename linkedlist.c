@@ -293,9 +293,9 @@ LLNode * search_list(LList *list, int query) {
             // return a reference to this LLNode
             return ptr;
         }
-    }
 
-    ptr = ptr->next;
+        ptr = ptr->next;
+    }
 
     // if not in the list, return NULL
     return NULL;
