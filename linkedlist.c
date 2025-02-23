@@ -4,7 +4,7 @@
 // Sample C Implementation of a Singly Linked List.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-02-21.
+// This code was last updated on 2025-02-23.
 
 typedef struct LLNode_s {
     int data;
@@ -34,6 +34,8 @@ void insert_new_element_at_existing_list_non_zero_pos(LList *, int, int);
 void insert_new_element_at_existing_list_zero_pos(LList *, int, int);
 void insert_new_element_at(LList *, int, int);
 void traverse_list_recursive(LLNode *);
+void add_new_element_recursive(LLNode **, int);
+LLNode * remove_element_recursive(LLNode **, int);
 
 
 /*
@@ -70,10 +72,16 @@ int main(void) {
     traverse_list(list);
 
 
+    // add a node via recursive approach
+    add_new_element_recursive(&(list->head), 200);
+
     // add nodes
     add_new_element(list, 10);
     add_new_element(list, 20);
     add_new_element(list, 30);
+
+    // add a node via recursive approach
+    add_new_element_recursive(&(list->head), 70);
 
 
     // check the list first
@@ -111,6 +119,13 @@ int main(void) {
     traverse_list(list);
 
 
+    tmp = search_list(list, 100);
+
+    if(tmp) {
+        printf("Found 100!\n");
+    }
+
+
     // deallocate all
     tmp = remove_element(list, 10);
     free(tmp);
@@ -118,7 +133,9 @@ int main(void) {
     // check the list again
     traverse_list(list);
 
-    tmp = remove_element(list, 20);
+    printf("Recursive Delete\n");
+    //tmp = remove_element(list, 20);
+    tmp = remove_element_recursive(&(list->head), 20);
     free(tmp);
 
     // check the list again
@@ -146,6 +163,23 @@ int main(void) {
 
 
     tmp = remove_element(list, 80);
+    free(tmp);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+    tmp = remove_element_recursive(&(list->head), 200);
+    free(tmp);
+
+
+    // check the list again
+    traverse_list(list);
+
+
+
+    tmp = remove_element_recursive(&(list->head), 70);
     free(tmp);
 
 
@@ -351,7 +385,8 @@ LLNode * remove_element_existing_list_first_node(LList *list, int query) {
         tmp = list->head;
 
         // to indicate that removing this node
-        // will make the list empty
+        // will remove the current head, therefore
+        // the list will have a new head
         list->head = list->head->next;
 
         // return a reference to this node
@@ -473,4 +508,96 @@ void traverse_list_recursive(LLNode *node) {
     // essentially, traverse the node that
     // comes after the current node
     traverse_list_recursive(node->next);
+}
+
+
+void add_new_element_recursive(LLNode **node, int val) {
+    // check first if this node is NULL
+    // if it is, then it was because the list is empty
+    if(*node == NULL) {
+        // create a new node
+        LLNode *tmp = malloc(sizeof(LLNode));
+        // set the data and the next components
+        tmp->data = val;
+        // because it is the new last element (no node after this)
+        tmp->next = NULL;
+        // update the old last node so that it now knows
+        // that it has a node after it (tmp)
+        *node = tmp;
+
+        return;
+    }
+
+    // otherwise, process and proceed until
+    // the second to the last node is reached
+    if((*node)->next != NULL) {
+        // we pass the address of this node since
+        // we want to update this
+        add_new_element_recursive(&(*node)->next, val);
+    }
+    else {
+        // if it is, then add the node then return
+        // this is a base case
+
+        // create a new node
+        LLNode *tmp = malloc(sizeof(LLNode));
+        // set the data and the next components
+        tmp->data = val;
+        // because it is the new last element (no node after this)
+        tmp->next = NULL;
+        // update the old last node so that it now knows
+        // that it has a node after it (tmp)
+        (*node)->next = tmp;
+    }
+}
+
+
+LLNode * remove_element_recursive(LLNode **node, int query) {
+    // check first if this node is NULL
+    // if it is, then it was because the list is empty
+    if(*node == NULL) {
+        // this means the list is empty, return NULL
+        return NULL;
+    }
+    else {
+        // if we are looking for the head
+        if((*node)->data == query) {
+            LLNode *tmp;
+            tmp = *node;
+
+            // to indicate that removing this node
+            // will remove the current head, therefore
+            // the list will have a new head
+            (*node) = (*node)->next;
+
+            // return a reference to this node
+            return tmp;
+        }
+    }
+
+    // otherwise, process and proceed until
+    // the second to the last node is reached
+    if((*node)->next != NULL) {
+        // check if this is what we want to delete
+        if((*node)->next->data == query) {
+            // use a temporary pointer to refer
+            // to the node that will be removed
+            LLNode *tmp = (*node)->next;
+
+            // remove the node from the list and
+            // update the links
+            (*node)->next = (*node)->next->next;
+
+            // simply just set the next pointer
+            tmp->next = NULL;
+
+            // return the node that was just removed
+            return tmp;
+        }
+
+        // proceed and keep finding the element
+        return remove_element_recursive(&(*node)->next, query);
+    }
+
+    return NULL;
 }
