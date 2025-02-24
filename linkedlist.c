@@ -4,7 +4,7 @@
 // Sample C Implementation of a Singly Linked List.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-02-23.
+// This code was last updated on 2025-02-24.
 
 typedef struct LLNode_s {
     int data;
@@ -36,6 +36,10 @@ void insert_new_element_at(LList *, int, int);
 void traverse_list_recursive(LLNode *);
 void add_new_element_recursive(LLNode **, int);
 LLNode * remove_element_recursive(LLNode **, int);
+void add_to_head(LList *, int);
+void add_to_tail(LList *, int);
+LLNode * remove_head(LList *list);
+LLNode * remove_tail(LList *list);
 
 
 /*
@@ -185,6 +189,34 @@ int main(void) {
 
     // check the list again
     traverse_list(list);
+
+
+    add_to_head(list, 10);
+    add_to_head(list, 20);
+    add_to_head(list, 30);
+
+    // check the list again
+    traverse_list(list);
+
+    tmp = remove_tail(list);
+    free(tmp);
+
+    // check the list again
+    traverse_list(list);
+
+    tmp = remove_tail(list);
+    free(tmp);
+
+    // check the list again
+    traverse_list(list);
+
+    tmp = remove_tail(list);
+    free(tmp);
+
+    // check the list again
+    traverse_list(list);
+
+
 
 
     // deallocate the linked list
@@ -600,4 +632,74 @@ LLNode * remove_element_recursive(LLNode **ptr, int query) {
     }
 
     return NULL;
+}
+
+
+void add_to_head(LList *list, int val) {
+    // we reuse the insert_new_element_at() and specify
+    // pos = 0
+    insert_new_element_at(list, 0, val);
+}
+
+
+void add_to_tail(LList *list, int val) {
+    // we reuse the add_new_element() because
+    // this was the add to tail behavior
+    add_new_element(list, val);
+}
+
+
+LLNode * remove_head(LList *list) {
+    // check if the list is empty
+    if( is_empty(list) ) {
+        return NULL;
+    }
+
+    // create a temporary pointer to the
+    // current head node because this will
+    // be removed from the list shortly
+    // and we want to keep reference
+    LLNode *tmp = list->head;
+
+    // update the head so that the new head
+    // is the next to the current head
+    list->head = list->head->next;
+
+    // probably do some cleanup?
+    tmp->next = NULL;
+
+    // return the reference to the old head
+    return tmp;
+}
+
+
+LLNode * remove_tail(LList *list) {
+    // check if the list is empty
+    if( is_empty(list) ) {
+        return NULL;
+    }
+
+    // check if there is only a single element
+    if(list->head->next == NULL) {
+        LLNode *tmp = list->head;
+        tmp->next = NULL;
+        list->head = NULL;
+        return tmp;
+    }
+
+    // traverse up to the second to the last element
+    LLNode *ptr = list->head;
+    while(ptr->next->next != NULL) {
+        ptr = ptr->next;
+    }
+
+    // remove as usual since
+    // ptr is now pointing at the
+    // second to the last element
+    LLNode *tmp = ptr->next;
+    ptr->next = NULL;
+
+    // cleanup perhaps?
+    tmp->next = NULL;
+    return tmp;
 }
