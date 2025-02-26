@@ -687,9 +687,19 @@ void trim_string(char *str) {
     // helper function that will remove the extra new line
     // added from reading the input file
     int len = strlen(str);
+    /* OLD CODE
     if (len > 0 && str[len - 1] == '\n') {
         str[len - 1] = '\0';
     }
+    */
+    // Begin Bug Fix: 2025-02-26
+    while(len > 0) {
+        if(str[len-1] != '\n' && str[len-1] != '\r')
+            break;
+        len--;
+    }
+    str[len] = '\0';
+    // End of Bug Fix: 2025-02-26
 }
 
 
