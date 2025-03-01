@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define NULL_MARKER -100
 
 // Sample C Implementation of a Stack using an array.
 // This combines all the codes covered during the lecture.
@@ -22,8 +23,7 @@ void push(StackArr *, int);
 int pop(StackArr *);
 int peek(StackArr *);
 int is_empty(StackArr *);
-
-
+int is_full(StackArr *);
 
 
 int main(void) {
@@ -100,7 +100,7 @@ int pop(StackArr *stack) {
     }
 
     // special marker?
-    return NULL;
+    return NULL_MARKER;
 }
 
 
@@ -113,7 +113,7 @@ int peek(StackArr *stack) {
     }
 
     // possibly return marker?
-    return NULL;
+    return NULL_MARKER;
 }
 
 
@@ -122,6 +122,7 @@ int is_empty(StackArr *stack) {
     // a valid one
     return stack->top == -1;
 }
+
 
 int is_full(StackArr *stack) {
     // check if all the spaces are used up
