@@ -34,14 +34,14 @@ int main(void) {
     push(stack, 20);
     push(stack, 30);
 
-    while(!is_empty(stack)) {
+    while( !is_empty(stack) ) {
         x = pop(stack);
         printf("%d\n", x);
     }
 
     push(stack, 40);
 
-    while(!is_empty(stack)) {
+    while( !is_empty(stack) ) {
         x = pop(stack);
         printf("%d\n", x);
     }
@@ -81,7 +81,7 @@ void push(StackArr *stack, int val) {
     // we can only add a new element if there
     // is still space or if capacity is not yet
     // reached
-    if(!is_full(stack)) {
+    if( !is_full(stack) ) {
         // find the next available space
         // in the array and put the element
         // there
@@ -92,7 +92,7 @@ void push(StackArr *stack, int val) {
 
 int pop(StackArr *stack) {
     // check first if the stack is empty
-    if(!is_empty(stack)) {
+    if( !is_empty(stack) ) {
         // return the top most element then
         // decrement the top index value
         // afterward
@@ -108,7 +108,7 @@ int peek(StackArr *stack) {
     // check if the stack is not empty
     // since this may cause an array index
     // out of bounds if it is
-    if(!is_empty(stack)) {
+    if( !is_empty(stack) ) {
         return stack->array[stack->top];
     }
 
