@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define NULL_MARKER -100
 
 // Sample C Implementation of a Stack using a linked list.
 // This combines all the codes covered during the lecture.
