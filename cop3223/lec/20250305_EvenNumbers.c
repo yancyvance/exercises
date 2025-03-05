@@ -1,6 +1,8 @@
 #include <stdio.h>
 #define MAX_SIZE 1000
 
+// Note: This version of the code is already fixed!
+
 // function prototypes
 int is_even(int num);
 int get_sum_even(int arr[MAX_SIZE], int count);
@@ -105,8 +107,41 @@ int get_max_even(int arr[MAX_SIZE], int count) {
     // incorrect assumption
     // for this problem, it is fine because eventually
     // we will correct this
-    int max_idx = 0;
+    //int max_idx = 0;      // this was causing a logic error
+    int max_idx = -1;       // this is the fix we are doing
 
+    // this is the fix to our previous code
+    // where we simply inspect all the elements in the array
+    for(int i = 0; i < count; i++) {
+        // if the current element is not an even number
+        // we simply skip it
+        if( !is_even(arr[i]) ) {
+            continue;
+        }
+
+        // if there is no candidate yet
+        if(max_idx == -1) {
+            // we assume this position to be
+            // the first candidate
+            max_idx = i;
+        }
+        else {
+            // otherwise, if there is already
+            // a candidate in mind, we simply
+            // do a check if the current element
+            // we are looking right now is greater
+            // than our current candidate
+            // note: at this point, both the candidate
+            // and the current element are even
+            // numbers; thereby fixing the logic
+            // error we had previously
+            if(arr[i] > arr[max_idx]) {
+                max_idx = i;
+            }
+        }
+    }
+
+    /* This portion of the code had a logic error
     // check through all the other elements
     for(int i = 1; i < count; i++) {
         // check if the current number is higher
@@ -120,6 +155,7 @@ int get_max_even(int arr[MAX_SIZE], int count) {
             }
         }
     }
+    */
 
     // return the value at that location
     return arr[max_idx];
