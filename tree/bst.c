@@ -4,7 +4,7 @@
 // Sample C Implementation of a binary search tree.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-03-03.
+// This code was last updated on 2025-03-06.
 
 typedef struct BSTNode_s {
     int data;
@@ -34,7 +34,10 @@ void postorder(BSTNode *);
 // helper functions
 int is_empty(BSTree *);
 BSTNode * find_sucessor(BSTNode *);
+BSTNode * find_sucessor_with_parent(BSTNode *, BSTNode **);
 BSTNode * find_predecessor(BSTNode *);
+BSTNode * node_removal_helper(BSTree *, BSTNode *, BSTNode *);
+void postorder_destroy_nodes(BSTNode *);
 
 
 int main(void) {
@@ -47,6 +50,7 @@ int main(void) {
     insert(tree, 10);
     insert(tree, 5);
     insert(tree, 90);
+    insert(tree, 100);
 
     // inorder traversal
     printf("In-Order Traversal:\n");
@@ -96,6 +100,20 @@ int main(void) {
     }
 
 
+    // delete node
+    tmp = remove_node(tree, 90);
+    if(tmp) {
+        printf("Deleted!\n");
+
+        // deallocate this node
+        destroy_node(tmp);
+    }
+
+    // inorder traversal
+    printf("In-Order Traversal:\n");
+    inorder(tree->root);
+
+
     // destroy the tree
     destroy_tree(tree);
 
@@ -113,11 +131,11 @@ BSTree * create_tree() {
 
 
 void destroy_tree(BSTree *tree) {
-    // currently assume that there are no nodes
-    // anymore
-    if( is_empty(tree) ) {
-        free(tree);
-    }
+    // destroy all the nodes first
+    postorder_destroy_nodes(tree->root);
+
+    // destroy the tree
+    free(tree);
 }
 
 
@@ -254,7 +272,78 @@ BSTNode * search(BSTree *tree, int query) {
 }
 
 
+BSTNode * remove_node(BSTree *tree, int query) {
+    // assumption is that the data of all
+    // the nodes of the tree is distinct
+
+    // check first if the tree is empty
+    if( is_empty(tree) ) {
+        return NULL;
+    }
+
+    // there are three scenarios for this
+    // operation, therefore we have to
+    // handle each scenario differently
+
+    // find the actual node first
+    BSTNode *ptr = tree->root;
+    // we need to add another pointer
+    // which holds to old value of ptr
+    // as ptr moves to the next node;
+    // essentially, think of it as the
+    // parent of ptr
+    BSTNode *parent = NULL;
+
+    // currently the tree is not empty
+    // so we just have to find the correct
+    // location of the value based on the
+    // BST property; keep going down until
+    // the correct node is found OR if
+    // we have reached the end
+    while(ptr != NULL) {
+        // keep on going down the tree
+        // until we find query!
+
+        // check if this is what we are
+        // looking for, if it is, then
+        // proceed with the deletion
+        if(ptr->data == query) {
+            // do the deletion here
+            // to simplify the code, we are
+            // going to do a function call
+            // to a helper function that
+            // performs the actual deletion
+            return node_removal_helper(tree, ptr, parent);
+        }
+
+        // update the parent pointer
+        // because ptr is about to change
+        parent = ptr;
+
+        // update ptr now by determining
+        // whether to go to the left or
+        // right based on the BST property
+        // if what we are looking for is
+        // less than the current node, we
+        // should go left; otherwise, go right
+        if(query < ptr->data) {
+            ptr = ptr->left;
+        }
+        else {
+            ptr = ptr->right;
+        }
+    }
+
+    return NULL;
+}
+
+
 void inorder(BSTNode *node) {
+    // this is the base case
+    if(node == NULL) {
+        return;
+    }
+
     // recursive visit which begins at
     // the root node
     // follows the order: LVR
@@ -275,6 +364,11 @@ void inorder(BSTNode *node) {
 
 
 void preorder(BSTNode *node) {
+    // this is the base case
+    if(node == NULL) {
+        return;
+    }
+
     // recursive visit which begins at
     // the root node
     // follows the order: VLR
@@ -295,6 +389,11 @@ void preorder(BSTNode *node) {
 
 
 void postorder(BSTNode *node) {
+    // this is the base case
+    if(node == NULL) {
+        return;
+    }
+
     // recursive visit which begins at
     // the root node
     // follows the order: LRV
@@ -328,6 +427,13 @@ BSTNode * find_sucessor(BSTNode *node) {
     // the node; in short, go to the right once
     // then go all the way to the left until
     // reach the end
+
+    // check first if there is a potential
+    // successor
+    if(node->right == NULL) {
+        return NULL;
+    }
+
     BSTNode *ptr = node->right;
     // we add a trailing pointer
     // that just keeps the old value
@@ -351,4 +457,192 @@ BSTNode * find_sucessor(BSTNode *node) {
     // the last node will be pointed
     // at by trail, therefore return this
     return trail;
+}
+
+
+BSTNode * find_sucessor_with_parent(BSTNode *node, BSTNode **parent) {
+    // idea is to find the small value
+    // that is located on the right subtree of
+    // the node; in short, go to the right once
+    // then go all the way to the left until
+    // reach the end
+
+    // check first if there is a potential
+    // successor
+    if(node->right == NULL) {
+        return NULL;
+    }
+
+    BSTNode *ptr = node->right;
+    // we add a trailing pointer
+    // that just keeps the old value
+    // of ptr; initialized to NULL
+    // to prevent logic error when
+    // there is no successor at all
+    BSTNode *trail = node;
+    // parent will be the trailing pointer
+    // for the trail (later will be a pointer
+    // to the parent of the actual successor
+    // note that this was passed as an address
+    // therefore, we need to dereference it
+    *parent = NULL;
+
+    // go all the way to the left
+    // stop only when the end is reached
+    while(ptr != NULL) {
+        // update the parent pointer
+        *parent = trail;
+
+        // update the trailing pointer
+        trail = ptr;
+
+        // update ptr to point to
+        // the left node
+        ptr = ptr->left;
+    }
+
+    // once we reached the end,
+    // the last node will be pointed
+    // at by trail, therefore return this
+    return trail;
+}
+
+
+BSTNode * node_removal_helper(BSTree *tree, BSTNode *ptr, BSTNode *parent) {
+    // this is a helper function that does the
+    // actual deletion and accounts for the 3
+    // different scenarios; ptr is the node we want
+    // to delete while parent is the parent of ptr
+
+    // Scenario 1: what we want to delete do
+    // not have any children; therefore, just
+    // cut it off; we do this by telling the
+    // parent that ptr won't be their child anymore
+    // follow the BST property to determine which
+    // child is going to be cut off
+    if(ptr->left == NULL && ptr->right == NULL) {
+        printf("Scenario 1\n");
+
+        // check if ptr is the root because
+        // it doesn't have a parent
+        if(parent == NULL) {
+            // then ptr is the only node
+            // in the tree, therefore making
+            // it an empty tree afterward
+            tree->root = NULL;
+        }
+        else {
+            // check if ptr is left child of
+            // its parent or otherwise
+            if(ptr->data < parent->data) {
+                parent->left = NULL;
+            }
+            else {
+                parent->right = NULL;
+            }
+        }
+
+        // reference to the node we just deleted
+        return ptr;
+    }
+
+    // Scenario 2: what we want to delete has
+    // one child; therefore, we simply cut off
+    // ptr and promote its only child to be the
+    // new child of the parent of ptr
+    if((ptr->left == NULL && ptr->right != NULL) || (ptr->left != NULL && ptr->right == NULL)) {
+        printf("Scenario 2\n");
+        // obtain a pointer to the only child of ptr
+        BSTNode *child;
+        if(ptr->left != NULL) {
+            child = ptr->left;
+        }
+        else {
+            child = ptr->right;
+        }
+
+        // check if this node has a parent
+        // meaning if there is no parent, it is the
+        // root; therefore, impacting how the child
+        // will be promoted; it becomes the new root
+        if(parent == NULL) {
+            tree->root = child;
+        }
+        else {
+            // promote the child by one level
+            // this means, the child will have a new
+            // parent; the parent will be the parent
+            // of ptr (node we want to delete);
+            // we still have to figure out first
+            // if ptr is which child of its parent
+            // whether left or right (BST property)
+            if(ptr->data < parent->data) {
+                parent->left = child;
+            }
+            else {
+                parent->right = child;
+            }
+        }
+
+        // reference to the node we just deleted
+        return ptr;
+    }
+
+    // Scenario 3: what we want to delete has
+    // two children; we perform a deletion by copying
+    // the idea is to find the successor of ptr then
+    // have the data value of the successor take the place
+    // of ptr (we do not delete the ptr node per se);
+    // rather, what we will be deleting will be the node
+    // of ptr's successor; note that it will be possible
+    // for the successor to have a right subtree BUT
+    // not a left subtree; why? because if there was a left
+    // subtree, then this is not the true successor of ptr!
+    // what this implies is that it is possible for
+    // for scenario 3 to end up with a scenario 1 or 2 as
+    // what we will be deleting will be the successor node!
+    if(ptr->left != NULL && ptr->right != NULL) {
+        printf("Scenario 3\n");
+        // find the successor of ptr using the other
+        // version of the function capable of returning
+        // the information about the parent of the node
+        BSTNode *parent_of_successor;
+        BSTNode *successor = find_sucessor_with_parent(ptr, &parent_of_successor);
+
+        printf("\tSuccessor: %d and Parent: %d\n", successor->data, parent_of_successor->data);
+
+        // simply copy the data value of the successor
+        // and retain the actual ptr node
+        ptr->data = successor->data;
+
+        // we now perform a delete at the successor!
+        return node_removal_helper(tree, successor, parent_of_successor);
+    }
+
+    return NULL;
+}
+
+
+void postorder_destroy_nodes(BSTNode *node) {
+    // this is the base case
+    if(node == NULL) {
+        return;
+    }
+
+    // recursive visit which begins at
+    // the root node
+    // follows the order: LRV
+
+    // left; if there is a left child
+    if(node->left != NULL) {
+        postorder_destroy_nodes(node->left);
+    }
+
+    // right; if there is a right child
+    if(node->right != NULL) {
+        postorder_destroy_nodes(node->right);
+    }
+
+    // visit the current node
+    free(node);
 }
