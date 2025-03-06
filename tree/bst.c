@@ -30,7 +30,11 @@ BSTNode * remove_node(BSTree *, int);
 void inorder(BSTNode *);
 void preorder(BSTNode *);
 void postorder(BSTNode *);
+
+// helper functions
 int is_empty(BSTree *);
+BSTNode * find_sucessor(BSTNode *);
+BSTNode * find_predecessor(BSTNode *);
 
 
 int main(void) {
@@ -82,6 +86,18 @@ int main(void) {
     else {
         printf("Not Found!\n");
     }
+
+
+    // determine the successor of nodes
+    printf("Successor:\n");
+    tmp = find_sucessor(tree->root);
+    if(tmp) {
+        printf("Next: %d\n", tmp->data);
+    }
+
+
+    // destroy the tree
+    destroy_tree(tree);
 
     return 0;
 }
@@ -303,4 +319,36 @@ int is_empty(BSTree *tree) {
     // simply inspecting if the root is
     // NULL or not
     return tree->root == NULL;
+}
+
+
+BSTNode * find_sucessor(BSTNode *node) {
+    // idea is to find the small value
+    // that is located on the right subtree of
+    // the node; in short, go to the right once
+    // then go all the way to the left until
+    // reach the end
+    BSTNode *ptr = node->right;
+    // we add a trailing pointer
+    // that just keeps the old value
+    // of ptr; initialized to NULL
+    // to prevent logic error when
+    // there is no successor at all
+    BSTNode *trail = NULL;
+
+    // go all the way to the left
+    // stop only when the end is reached
+    while(ptr != NULL) {
+        // update the trailing pointer
+        trail = ptr;
+
+        // update ptr to point to
+        // the left node
+        ptr = ptr->left;
+    }
+
+    // once we reached the end,
+    // the last node will be pointed
+    // at by trail, therefore return this
+    return trail;
 }
