@@ -4,7 +4,7 @@
 // Sample C Implementation of a binary search tree.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-03-02.
+// This code was last updated on 2025-03-03.
 
 typedef struct BSTNode_s {
     int data;
@@ -44,8 +44,17 @@ int main(void) {
     insert(tree, 5);
     insert(tree, 90);
 
-    // traversal
+    // inorder traversal
+    printf("In-Order Traversal:\n");
     inorder(tree->root);
+
+    // preorder traversal
+    printf("Pre-Order Traversal:\n");
+    preorder(tree->root);
+
+    // postorder traversal
+    printf("Post-Order Traversal:\n");
+    postorder(tree->root);
 
     return 0;
 }
@@ -121,14 +130,11 @@ void insert(BSTree *tree, int val) {
 }
 
 
-int is_empty(BSTree *tree) {
-    return tree->root == NULL;
-}
-
-
 void inorder(BSTNode *node) {
-    // recursive visit
-    // LVR
+    // recursive visit which begins at
+    // the root node
+    // follows the order: LVR
+
     // left
     if(node->left != NULL) {
         inorder(node->left);
@@ -141,4 +147,52 @@ void inorder(BSTNode *node) {
     if(node->right != NULL) {
         inorder(node->right);
     }
+}
+
+
+void preorder(BSTNode *node) {
+    // recursive visit which begins at
+    // the root node
+    // follows the order: VLR
+
+    // visit
+    printf("%d\n", node->data);
+
+    // left
+    if(node->left != NULL) {
+        preorder(node->left);
+    }
+
+    // right
+    if(node->right != NULL) {
+        preorder(node->right);
+    }
+}
+
+
+void postorder(BSTNode *node) {
+    // recursive visit which begins at
+    // the root node
+    // follows the order: LRV
+
+    // left
+    if(node->left != NULL) {
+        postorder(node->left);
+    }
+
+    // right
+    if(node->right != NULL) {
+        postorder(node->right);
+    }
+
+    // visit
+    printf("%d\n", node->data);
+}
+
+
+int is_empty(BSTree *tree) {
+    // check if the tree is empty by
+    // simply inspecting if the root is
+    // NULL or not
+    return tree->root == NULL;
 }
