@@ -122,6 +122,9 @@ int main(void) {
 
 
 BSTree * create_tree() {
+    // dynamically allocate the tree
+    // and set the root to NULL to indicate
+    // and empty tree
     BSTree *tree = malloc(sizeof(BSTree));
 
     tree->root = NULL;
@@ -131,6 +134,10 @@ BSTree * create_tree() {
 
 
 void destroy_tree(BSTree *tree) {
+    // helper function to destroy the entire
+    // tree by deallocating all the nodes
+    // then eventually the tree itself
+
     // destroy all the nodes first
     postorder_destroy_nodes(tree->root);
 
@@ -140,7 +147,10 @@ void destroy_tree(BSTree *tree) {
 
 
 BSTNode * create_node(int val) {
-    // create a new node
+    // helper function to simply create a new
+    // node and set the data attribute
+    // it then initializes the left and right child
+    // to be both NULL
     BSTNode *node = malloc(sizeof(BSTNode));
 
     // set the attributes
@@ -153,6 +163,7 @@ BSTNode * create_node(int val) {
 
 
 void destroy_node(BSTNode *node) {
+    // destroy the node
     free(node);
 }
 
@@ -461,6 +472,18 @@ BSTNode * find_sucessor(BSTNode *node) {
 
 
 BSTNode * find_sucessor_with_parent(BSTNode *node, BSTNode **parent) {
+    // this is another helper function that accepts
+    // an extra parameter which is a pointer to a pointer
+    // to a node; the idea is to be able to return two
+    // information when this function is called;
+    // the first is to return the successor of node while
+    // the second is to provide details about the parent
+    // of this successor node; therefore, we use the
+    // parent argument to be able to "modify" this
+    // from within this function and to relay the
+    // information to the calling function
+    // (pass by reference)
+
     // idea is to find the small value
     // that is located on the right subtree of
     // the node; in short, go to the right once
