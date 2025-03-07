@@ -33,7 +33,7 @@ int count_vowels(char start, char end) {
         // a third (temporary) variable
         // to hold the value of one of the
         // two variables
-        int tmp = start;
+        char tmp = start;
         start = end;
         end = tmp;
     }
