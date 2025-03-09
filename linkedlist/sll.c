@@ -38,8 +38,8 @@ void add_new_element_recursive(LLNode **, int);
 LLNode * remove_element_recursive(LLNode **, int);
 void add_to_head(LList *, int);
 void add_to_tail(LList *, int);
-LLNode * remove_head(LList *list);
-LLNode * remove_tail(LList *list);
+LLNode * remove_head(LList *);
+LLNode * remove_tail(LList *);
 
 
 /*
@@ -52,6 +52,10 @@ LLNode * remove_tail(LList *list);
         LLNode * remove_element(LList *, int);
         LLNode * get_element_at(LList *, int);
         void insert_new_element_at(LList *, int, int);
+        void add_to_head(LList *, int);
+        void add_to_tail(LList *, int);
+        LLNode * remove_head(LList *);
+        LLNode * remove_tail(LList *);
 
     The other functions are helper functions that
     accounts for certain scenarios. The functions above
