@@ -2,6 +2,8 @@
 #include <stdlib.h>
 
 // Sample C Implementation of a Singly Linked List.
+// This is an alternative presentation that
+// does not include an LList struct.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
 // This code was last updated on 2025-03-09.
@@ -10,11 +12,6 @@ typedef struct LLNode_s {
     int data;
     struct LLNode_s *next;
 } LLNode;
-/*
-typedef struct LLNode_s {
-    LLNode *head;
-} LLNode;
-*/
 
 // function prototypes
 int is_empty(LLNode *);
