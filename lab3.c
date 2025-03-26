@@ -20,6 +20,10 @@ int main(void) {
     long result_factorial = factorial(5);
     printf("Factorial of 5 is: %ld\n", result_factorial);
     
+    // test factorial; expected output is 1
+    result_factorial = factorial(0);
+    printf("Factorial of 0 is: %ld\n", result_factorial);
+    
     // test permutation; expected output is 20
     long result_permutation = permutation(5, 2);
     printf("Permutation P(5,2) is: %ld\n", result_permutation);
