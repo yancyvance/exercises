@@ -35,17 +35,23 @@ int main(void) {
 
 // function definitions
 int get_left_index(int idx) {
+    // assumption: index of first node
+    // of the heap is 0
     return idx * 2 + 1;
 }
 
 
 int get_right_index(int idx) {
+    // assumption: index of first node
+    // of the heap is 0
     return idx * 2 + 2;
 }
 
 
 int get_parent_index(int idx) {
-    // integer division
+    // assumption: index of first node
+    // of the heap is 0
+    // the following does an integer division
     return (idx-1) / 2;
 }
 
