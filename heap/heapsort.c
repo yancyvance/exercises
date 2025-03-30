@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-// Sample C Implementation of a min heap.
+// Sample C Implementation of heapsort.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
 // This code was last updated on 2025-03-28.
