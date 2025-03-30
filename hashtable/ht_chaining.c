@@ -53,7 +53,7 @@ int main(void) {
 
     // do a lookup on the table
     LLNode *tmp;
-    tmp = search_table(hash_table, "boo");
+    tmp = search_table(hash_table, "bob");
 
     // check if this exists in the table
     if(tmp)
