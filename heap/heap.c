@@ -27,6 +27,7 @@ void heapify_up(MinHeap *, int);
 void insert(MinHeap *, int);
 int extract_min(MinHeap *);
 int peek(MinHeap *);
+void decrease_key(MinHeap *, int, int);
 int is_empty(MinHeap *);
 void print_heap(MinHeap *);
 
@@ -49,6 +50,10 @@ int main(void) {
 
     // peek
     printf("%d\n", peek(heap));
+
+    // adjust the key of last node
+    // to a lower one
+    decrease_key(heap, heap->size-1, 5);
 
     // individually extract the min
     // until the heap becomes empty
@@ -216,6 +221,20 @@ int peek(MinHeap *heap) {
 
     // just return a very large number
     return INT_MAX;
+}
+
+
+void decrease_key(MinHeap *heap, int idx, int val) {
+    // check first if this is a valid
+    // index in the heap based on the size
+    if(idx < heap->size) {
+        // update the key of idx
+        heap->array[idx] = val;
+
+        // do a heapify up to fix
+        // possible violations
+        heapify_up(heap, idx);
+    }
 }
 
 
