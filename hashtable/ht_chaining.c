@@ -36,6 +36,9 @@ void destroy_linked_list(LList *);
 void destory_linked_list_recursive(LLNode *);
 void add_to_tail(LList *, char *);
 int hash_function(HashTable *, char *);
+void insert(HashTable *, char *);
+LLNode * search_table(HashTable *, char *);
+LLNode * linked_list_search(LList *, char *);
 
 
 
@@ -43,6 +46,18 @@ int main(void) {
     // dynamically allocate the table
     HashTable *hash_table = create_hash_table(10);
 
+    // insert the following data
+    insert(hash_table, "bob");
+    insert(hash_table, "bbo");
+
+
+    // do a lookup on the table
+    LLNode *tmp;
+    tmp = search_table(hash_table, "boo");
+
+    // check if this exists in the table
+    if(tmp)
+        printf("Found Node!\n");
 
 
     // deallocate the table
@@ -61,6 +76,11 @@ HashTable * create_hash_table(int capacity) {
     // dynamically allocate this array of pointers to LLNode
     hash_table->table = malloc(sizeof(LList*) * capacity);
 
+    // set all the pointers to NULL
+    // to prevent from dealing with garbage values
+    for(int i = 0; i < capacity; i++)
+        hash_table->table[i] = NULL;
+
     hash_table->capacity = capacity;
 
     return hash_table;
@@ -72,7 +92,10 @@ void destroy_hash_table(HashTable *hash_table) {
     // of the dynamic array, and individually
     // destroy the linked list
     for(int i = 0; i < hash_table->capacity; i++) {
-
+        // check if there is a linked list existing
+        // at this location
+        if(hash_table->table[i] != NULL)
+            destory_linked_list_recursive(hash_table->table[i]->head);
     }
 
     // destroy the hash table itself
@@ -187,4 +210,56 @@ int hash_function(HashTable *hash_table, char *str) {
     // so that the result will be in the range
     // of 0-capacity of the hash table
     return sum_of_ascii % hash_table->capacity;
+}
+
+
+void insert(HashTable *hash_table, char *str) {
+    // hash the given string
+    int hash_value = hash_function(hash_table, str);
+
+    // check first if there is already a linked
+    // list existing in this location, if none
+    // create an empty one
+    if( hash_table->table[hash_value] == NULL )
+        hash_table->table[hash_value] = create_linked_list();
+
+    // add to tail at the hash_value's location
+    add_to_tail( hash_table->table[hash_value], str );
+}
+
+
+LLNode * search_table(HashTable *hash_table, char *str) {
+    // this function searches a hash table
+    // hash the given string
+    int hash_value = hash_function(hash_table, str);
+
+    // check if there is a list first
+    if(hash_table->table[hash_value] != NULL) {
+        // do a search operation on a linked list
+        return linked_list_search(hash_table->table[hash_value], str);
+    }
+
+    // it is not found
+    return NULL;
+}
+
+
+LLNode * linked_list_search(LList *list, char *str) {
+    // check if the list is empty or not
+    if(list->head == NULL)
+        return NULL;
+
+    LLNode *ptr = list->head;
+    while(ptr != NULL) {
+        // if this node has data
+        // that we are looking for
+        // we are dealing with a string
+        if( strcmp(ptr->data, str) == 0 )
+            return ptr;
+
+        // go to the next
+        ptr = ptr->next;
+    }
+
+    return NULL;
 }
