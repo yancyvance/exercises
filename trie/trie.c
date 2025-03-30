@@ -10,7 +10,7 @@
 
 typedef struct TrieNode_s {
     struct TrieNode_s *children[LETTER_COUNT];
-    int is_end;
+    int is_terminal;
 } TrieNode;
 
 typedef struct Trie_s {
