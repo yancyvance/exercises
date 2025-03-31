@@ -117,7 +117,7 @@ void heapsort(int *arr, int size) {
 
     // while there are still nodes that
     // are unsorted, repeat the process
-    while(count_unsorted > 0) {
+    while(count_unsorted > 1) {
         // swap
         swap(&arr[0], &arr[count_unsorted-1]);
 
