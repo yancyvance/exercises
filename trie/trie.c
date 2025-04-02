@@ -7,7 +7,7 @@
 // Sample C Implementation of a trie.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-03-30.
+// This code was last updated on 2025-04-02.
 
 
 typedef struct TrieNode_s {
@@ -191,19 +191,27 @@ int remove_string_recursive(TrieNode *node, char *str, int len, int pos) {
             return 0;
         }
         else {
+            // if no child nodes, then, we
+            // can safely delete this node
+
             // we can simply deallocate this
             destroy_node(node);
 
             // tell the calling function
             // to start considering deleting
             // nodes up the tree, unless
-            // a marker is found
+            // one of the stopping conditions
+            // is met: (1) a marker is found;
+            // or (2) node has other children
             return 1;
         }
 
         return 0;
     }
 
+    // helper functions to get the index
+    // and the location of the path from
+    // the array
     char alpha = str[pos];
     int idx = get_char_index(alpha);
 
@@ -217,32 +225,25 @@ int remove_string_recursive(TrieNode *node, char *str, int len, int pos) {
         // from the perspective of the parent
         node->children[idx] = NULL;
 
-        // check if this node has any other
-        // children now
-        if( has_children(node) ) {
-            // if it has then we can
-            // safely stop
+        // consider this for deletion, but
+        // check first if one of the
+        // stopping conditions is met:
+        // (1) a marker is found;
+        // or (2) node has other children
+        if( node->is_terminal || has_children(node) ) {
+            // other words need this node
+            // so we can safely stop
             return 0;
         }
         else {
-            // otherwise, we do one more
-            // check if this is somebody
-            // else's terminal node
-            if(node->is_terminal) {
-                // if it is, then we safely
-                // stop
-                return 0;
-            }
-            else {
-                // otherwise, we also remove
-                // this node
-                free(node);
+            // otherwise, we also remove
+            // this node
+            free(node);
 
-                // inform the calling function
-                // that we removed one of
-                // its child nodes
-                return 1;
-            }
+            // inform the calling function
+            // that we removed one of
+            // its child nodes
+            return 1;
         }
     }
 
