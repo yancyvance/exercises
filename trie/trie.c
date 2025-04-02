@@ -303,7 +303,7 @@ int search(Trie *trie, char *str) {
 int has_children(TrieNode *node) {
     // in case this was called with no node
     if(node == NULL)
-        return -1;
+        return 0;
 
     // check if all of its children are NULL
     for(int i = 0; i < LETTER_COUNT; i++) {
