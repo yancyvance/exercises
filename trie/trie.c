@@ -26,6 +26,7 @@ TrieNode * create_node();
 void destroy_trie(Trie *);
 void destroy_node(TrieNode *);
 int get_char_index(char);
+char index_to_char(int);
 void insert(Trie *, char *);
 void remove_string(Trie *, char *);
 int remove_string_recursive(TrieNode *, char *, int, int);
@@ -127,6 +128,12 @@ int get_char_index(char alpha) {
     alpha = tolower(alpha);
 
     return alpha-'a';
+}
+
+
+char index_to_char(int idx) {
+    // convert index to lowercase letter
+    return (char) (idx+'a');
 }
 
 
