@@ -225,6 +225,14 @@ int remove_string_recursive(TrieNode *node, char *str, int len, int pos) {
         // from the perspective of the parent
         node->children[idx] = NULL;
 
+        // check first if this is the
+        // root node now, because
+        // we do not want to delete the
+        // root node; if it is, then
+        // we can safely stop the process
+        if(pos == 0)
+            return 0;
+
         // consider this for deletion, but
         // check first if one of the
         // stopping conditions is met:
