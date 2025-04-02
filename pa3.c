@@ -61,6 +61,9 @@ int main(void) {
         insert(tree, num);
     }
 
+    // close the file
+    fclose(input_file);
+
     // output the sum at level
     printf("%d\n", sum_at_level(tree->root, level));
 
