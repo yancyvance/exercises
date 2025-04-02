@@ -174,7 +174,8 @@ void heapify_up(MinHeap *heap, int idx) {
 
 
 void insert(MinHeap *heap, int val) {
-    // insert at the last available slot
+    // insert at the next available slot
+    // which is at index of size (because 0 index)
     if(heap->size < heap->capacity) {
         // put at the last slot
         heap->array[heap->size++] = val;
