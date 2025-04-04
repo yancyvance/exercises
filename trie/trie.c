@@ -178,6 +178,9 @@ void remove_string(Trie *trie, char *str) {
 
 
 int remove_string_recursive(TrieNode *node, char *str, int len, int pos) {
+    // this recursive function returns 1 if
+    // it deleted a node, 0 otherwise
+
     // if there is no node, return 0
     if(node == NULL)
         return 0;
@@ -185,6 +188,14 @@ int remove_string_recursive(TrieNode *node, char *str, int len, int pos) {
     // base case, we have reached
     // the last letter
     if(len == pos) {
+        // check first if the search was
+        // successful by looking at whether
+        // this node is a terminal node
+        // if it is not, then safely terminate
+        // the delete operation; search failed!
+        if( !(node->is_terminal) )
+            return 0;
+
         // check if this node about to be deleted
         // has children
         if( has_children(node) ) {
@@ -227,7 +238,7 @@ int remove_string_recursive(TrieNode *node, char *str, int len, int pos) {
     int has_lost_child = remove_string_recursive(node->children[idx], str, len, pos+1);
 
     if(has_lost_child) {
-        // if this node was deleted
+        // if a child node was deleted
         // then forget this reference
         // from the perspective of the parent
         node->children[idx] = NULL;
@@ -253,6 +264,7 @@ int remove_string_recursive(TrieNode *node, char *str, int len, int pos) {
         else {
             // otherwise, we also remove
             // this node
+            //destroy_node(node); // involves a loop that we can skip
             free(node);
 
             // inform the calling function
