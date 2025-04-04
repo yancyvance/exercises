@@ -7,7 +7,7 @@
 // Sample C Implementation of a trie.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-04-02.
+// This code was last updated on 2025-04-04.
 
 
 typedef struct TrieNode_s {
