@@ -49,6 +49,8 @@ void insert(HashTable *, Person *);
 Person * search_table(HashTable *, char *);
 LLNode * linked_list_search(LList *, char *);
 void display_person(Person *);
+void display_table(HashTable *);
+void recursive_print_node(LLNode *);
 
 
 
@@ -60,6 +62,8 @@ int main(void) {
     insert(hash_table, create_person("bob123", "Bob Smith", 20));
     insert(hash_table, create_person("obb123", "John Doe", 25));
 
+    // print the table
+    display_table(hash_table);
 
     // this will hold the query string
     // assume that no white space
@@ -321,4 +325,28 @@ void display_person(Person *person) {
     printf("ID: %s\n", person->key);
     printf("Name: %s\n", person->name);
     printf("Age: %d\n", person->age);
+}
+
+
+void display_table(HashTable *hash_table) {
+    printf("Hash Table Contents:\n");
+    // iterate through all the elements
+    for(int i = 0; i < hash_table->capacity; i++) {
+        // check if there is a list
+        if(hash_table->table[i])
+            // print the contents of this list
+            recursive_print_node(hash_table->table[i]->head);
+    }
+}
+
+
+void recursive_print_node(LLNode *node) {
+    if(node == NULL)
+        return;
+
+    // display this person
+    display_person(node->data);
+
+    // recursively call the function
+    recursive_print_node(node->next);
 }
