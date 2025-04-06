@@ -48,7 +48,9 @@ int string_to_int(char *);
 int hash_function(HashTable *, int);
 void insert(HashTable *, PersonItem *);
 PersonItem * search_table(HashTable *, char *);
+PersonItem * delete_item(HashTable *, char *);
 LLNode * linked_list_search(LList *, char *);
+LLNode * linked_list_delete(LList *, char *);
 void display_person(PersonItem *);
 void display_table(HashTable *);
 void recursive_print_node(LLNode *);
@@ -57,7 +59,7 @@ void recursive_print_node(LLNode *);
 
 int main(void) {
     // dynamically allocate the table
-    HashTable *hash_table = create_hash_table(10);
+    HashTable *hash_table = create_hash_table(11);
 
     // insert the following data
     insert(hash_table, create_person("bob123", "Bob Smith", 20));
@@ -84,6 +86,19 @@ int main(void) {
     else {
         printf("No Record Found!\n");
     }
+
+    // delete a record
+    tmp = delete_item(hash_table, "bob123");
+
+    if(tmp) {
+        printf("Record Deleted!\n");
+
+        // deallocate the person
+        destroy_person(tmp);
+    }
+
+    // print the table
+    display_table(hash_table);
 
 
     // deallocate the table
@@ -150,6 +165,10 @@ PersonItem * create_person(char *key, char *name, int age) {
 
 
 void destroy_person(PersonItem *person) {
+    // if not an actual person
+    if(person == NULL)
+        return;
+
     // deallocate the strings
     free(person->key);
     free(person->name);
@@ -309,6 +328,30 @@ PersonItem * search_table(HashTable *hash_table, char *str) {
 }
 
 
+PersonItem * delete_item(HashTable *hash_table, char *str) {
+    // this function deletes an item from a hash table
+    // however, it does not do the actual deallocation
+    // it must be done by the calling function
+    // convert the string to an int
+    int key = string_to_int(str);
+    // hash the given int
+    int hash_value = hash_function(hash_table, key);
+
+    // check if there is a list first
+    if(hash_table->table[hash_value] != NULL) {
+        // do a delete operation on a linked list
+        LLNode *node = linked_list_delete(hash_table->table[hash_value], str);
+
+        // return the person's data
+        if(node)
+            return node->data;
+    }
+
+    // it is not found
+    return NULL;
+}
+
+
 LLNode * linked_list_search(LList *list, char *str) {
     // check if the list is empty or not
     if(list->head == NULL)
@@ -323,6 +366,61 @@ LLNode * linked_list_search(LList *list, char *str) {
             return ptr;
 
         // go to the next
+        ptr = ptr->next;
+    }
+
+    return NULL;
+}
+
+
+LLNode * linked_list_delete(LList *list, char *str) {
+    // check if the list is empty or not
+    if(list->head == NULL)
+        return NULL;
+
+    // the trailing pointer is to
+    // keep track the node right before
+    // what we want to delete
+    LLNode *trail = NULL;
+    LLNode *ptr = list->head;
+    while(ptr != NULL) {
+        // if this node has data
+        // that we are looking for
+        // we are dealing with a string
+        if( strcmp(ptr->data->key, str) == 0 ) {
+            // check first if the trailing
+            // pointer is NULL, because
+            // that means ptr is the head
+            // so update the list
+            if(trail == NULL) {
+                // new head of the list then
+                list->head = ptr->next;
+            }
+            else {
+                // otherwise, we just
+                // remove ptr and update
+                // its parent to have a new
+                // child node
+                trail->next = ptr->next;
+            }
+
+            // did we just remove the tail?
+            if(list->tail == ptr) {
+                // update the tail to be the
+                // trailing pointer
+                list->tail = trail;
+            }
+
+            // reset the next for cleanup
+            ptr->next = NULL;
+
+            // return the node found
+            return ptr;
+        }
+
+        // go to the next; but update
+        // the trailing pointer first
+        trail = ptr;
         ptr = ptr->next;
     }
 
