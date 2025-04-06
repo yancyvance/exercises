@@ -4,7 +4,7 @@
 #define MAX_WORD_SIZE 255
 #define IS_LINEAR_PROBING 1
 
-// Sample C Implementation of a hash table (chaining).
+// Sample C Implementation of a hash table (open addressing).
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
 // This code was last updated on 2025-04-06.
