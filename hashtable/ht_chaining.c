@@ -6,17 +6,17 @@
 // Sample C Implementation of a hash table (chaining).
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-04-05.
+// This code was last updated on 2025-04-06.
 
 
-typedef struct Person_s {
+typedef struct PersonItem_s {
     char *key;
     char *name;
     int age;
-} Person;
+} PersonItem;
 
 typedef struct LLNode_s {
-    Person *data;
+    PersonItem *data;
     struct LLNode_s *next;
 } LLNode;
 
@@ -36,19 +36,20 @@ typedef struct HashTable_s {
 // function prototypes
 HashTable * create_hash_table(int);
 void destroy_hash_table(HashTable *);
-Person * create_person(char *, char *, int);
-void destroy_person(Person *);
-LLNode * create_node(Person *);
+PersonItem * create_person(char *, char *, int);
+void destroy_person(PersonItem *);
+LLNode * create_node(PersonItem *);
 void destroy_node(LLNode *);
 LList * create_linked_list();
 void destroy_linked_list(LList *);
 void destory_linked_list_recursive(LLNode *);
-void add_to_tail(LList *, Person *);
-int hash_function(HashTable *, char *);
-void insert(HashTable *, Person *);
-Person * search_table(HashTable *, char *);
+void add_to_tail(LList *, PersonItem *);
+int string_to_int(char *);
+int hash_function(HashTable *, int);
+void insert(HashTable *, PersonItem *);
+PersonItem * search_table(HashTable *, char *);
 LLNode * linked_list_search(LList *, char *);
-void display_person(Person *);
+void display_person(PersonItem *);
 void display_table(HashTable *);
 void recursive_print_node(LLNode *);
 
@@ -73,7 +74,7 @@ int main(void) {
     scanf("%s", query);     // "bob123"
 
     // do a lookup on the table
-    Person *tmp = search_table(hash_table, query);
+    PersonItem *tmp = search_table(hash_table, query);
 
     // check if this exists in the table
     if(tmp) {
@@ -128,9 +129,9 @@ void destroy_hash_table(HashTable *hash_table) {
 }
 
 
-Person * create_person(char *key, char *name, int age) {
+PersonItem * create_person(char *key, char *name, int age) {
     // dynamically create a person
-    Person *person = malloc(sizeof(Person));
+    PersonItem *person = malloc(sizeof(PersonItem));
 
     // set the appropriate attributes
     // dynamically allocate for the string
@@ -148,7 +149,7 @@ Person * create_person(char *key, char *name, int age) {
 }
 
 
-void destroy_person(Person *person) {
+void destroy_person(PersonItem *person) {
     // deallocate the strings
     free(person->key);
     free(person->name);
@@ -158,7 +159,7 @@ void destroy_person(Person *person) {
 }
 
 
-LLNode * create_node(Person *data) {
+LLNode * create_node(PersonItem *data) {
     // dynamically create a node
     LLNode *node = malloc(sizeof(LLNode));
 
@@ -224,7 +225,7 @@ void destory_linked_list_recursive(LLNode *node) {
 }
 
 
-void add_to_tail(LList *list, Person *val) {
+void add_to_tail(LList *list, PersonItem *val) {
     // if linked list is empty, then set
     // the head and tail
     if(list->head == NULL) {
@@ -241,13 +242,11 @@ void add_to_tail(LList *list, Person *val) {
 }
 
 
-int hash_function(HashTable *hash_table, char *str) {
-    // the following is a simple hash function
-    // that gets the sum of the ascii of the
-    // characters in str; it then maps
-    // the sum to a corresponding number in the
-    // range of 0 to size of hash table, inclusive
-    // this is done through modulo operator
+int string_to_int(char *str) {
+    // this is a helper function that converts
+    // a string to an integer; it does this
+    // by getting the sum of the ascii of the
+    // characters in str
     int sum_of_ascii = 0;
 
     // we simply get the sum of the lowercase
@@ -256,16 +255,26 @@ int hash_function(HashTable *hash_table, char *str) {
     for(int i = 0; i < len; i++)
         sum_of_ascii = sum_of_ascii + str[i];
 
-    // afterward, we do a division to the sum
-    // so that the result will be in the range
-    // of 0-capacity of the hash table
-    return sum_of_ascii % hash_table->capacity;
+    return sum_of_ascii;
 }
 
 
-void insert(HashTable *hash_table, Person *data) {
-    // hash the given string
-    int hash_value = hash_function(hash_table, data->key);
+int hash_function(HashTable *hash_table, int key) {
+    // the following is a simple hash function
+    // that maps a key to a corresponding number
+    // in the range of 0 to size of
+    // hash table, inclusive; this is
+    // done through modulo operator
+    // this is called the division method
+    return key % hash_table->capacity;
+}
+
+
+void insert(HashTable *hash_table, PersonItem *data) {
+    // convert the string to an int
+    int key = string_to_int(data->key);
+    // hash the given int
+    int hash_value = hash_function(hash_table, key);
 
     // check first if there is already a linked
     // list existing in this location, if none
@@ -278,10 +287,12 @@ void insert(HashTable *hash_table, Person *data) {
 }
 
 
-Person * search_table(HashTable *hash_table, char *str) {
+PersonItem * search_table(HashTable *hash_table, char *str) {
     // this function searches a hash table
-    // hash the given string
-    int hash_value = hash_function(hash_table, str);
+    // convert the string to an int
+    int key = string_to_int(str);
+    // hash the given int
+    int hash_value = hash_function(hash_table, key);
 
     // check if there is a list first
     if(hash_table->table[hash_value] != NULL) {
@@ -319,7 +330,7 @@ LLNode * linked_list_search(LList *list, char *str) {
 }
 
 
-void display_person(Person *person) {
+void display_person(PersonItem *person) {
     // helper function to just display
     // the person's details
     printf("ID: %s\n", person->key);
