@@ -1,15 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MAX_WORD_SIZE 255
 
 // Sample C Implementation of a hash table (chaining).
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-03-30.
+// This code was last updated on 2025-04-05.
 
+
+typedef struct Person_s {
+    char *key;
+    char *name;
+    int age;
+} Person;
 
 typedef struct LLNode_s {
-    char *data;
+    Person *data;
     struct LLNode_s *next;
 } LLNode;
 
@@ -29,16 +36,19 @@ typedef struct HashTable_s {
 // function prototypes
 HashTable * create_hash_table(int);
 void destroy_hash_table(HashTable *);
-LLNode * create_node(char *);
+Person * create_person(char *, char *, int);
+void destroy_person(Person *);
+LLNode * create_node(Person *);
 void destroy_node(LLNode *);
 LList * create_linked_list();
 void destroy_linked_list(LList *);
 void destory_linked_list_recursive(LLNode *);
-void add_to_tail(LList *, char *);
+void add_to_tail(LList *, Person *);
 int hash_function(HashTable *, char *);
-void insert(HashTable *, char *);
-LLNode * search_table(HashTable *, char *);
+void insert(HashTable *, Person *);
+Person * search_table(HashTable *, char *);
 LLNode * linked_list_search(LList *, char *);
+void display_person(Person *);
 
 
 
@@ -47,17 +57,28 @@ int main(void) {
     HashTable *hash_table = create_hash_table(10);
 
     // insert the following data
-    insert(hash_table, "bob");
-    insert(hash_table, "bbo");
+    insert(hash_table, create_person("bob123", "Bob Smith", 20));
+    insert(hash_table, create_person("obb123", "John Doe", 25));
 
+
+    // this will hold the query string
+    // assume that no white space
+    char query[MAX_WORD_SIZE];
+
+    printf("Query: ");
+    scanf("%s", query);     // "bob123"
 
     // do a lookup on the table
-    LLNode *tmp;
-    tmp = search_table(hash_table, "bob");
+    Person *tmp = search_table(hash_table, query);
 
     // check if this exists in the table
-    if(tmp)
-        printf("Found Node!\n");
+    if(tmp) {
+        printf("Record Found!\n");
+        display_person(tmp);
+    }
+    else {
+        printf("No Record Found!\n");
+    }
 
 
     // deallocate the table
@@ -103,17 +124,42 @@ void destroy_hash_table(HashTable *hash_table) {
 }
 
 
-LLNode * create_node(char *str) {
-    // dynamically create a node
-    LLNode *node = malloc(sizeof(LLNode));
+Person * create_person(char *key, char *name, int age) {
+    // dynamically create a person
+    Person *person = malloc(sizeof(Person));
 
     // set the appropriate attributes
     // dynamically allocate for the string
     // note that we add plus 1 due to the NULL
     // terminator for the string
-    node->data = malloc(sizeof(char) * (strlen(str)+1));
-    // we then copy the value of the str argument
-    strcpy(node->data, str);
+    person->key = malloc(sizeof(char) * (strlen(key)+1));
+    person->name = malloc(sizeof(char) * (strlen(name)+1));
+
+    // we then copy the value of the arguments
+    strcpy(person->key, key);
+    strcpy(person->name, name);
+    person->age = age;
+
+    return person;
+}
+
+
+void destroy_person(Person *person) {
+    // deallocate the strings
+    free(person->key);
+    free(person->name);
+
+    // deallocate the person
+    free(person);
+}
+
+
+LLNode * create_node(Person *data) {
+    // dynamically create a node
+    LLNode *node = malloc(sizeof(LLNode));
+
+    // set the appropriate attributes
+    node->data = data;
 
     // set the next to NULL
     node->next = NULL;
@@ -123,8 +169,8 @@ LLNode * create_node(char *str) {
 
 
 void destroy_node(LLNode *node) {
-    // deallocate the string first
-    free(node->data);
+    // destroy the person
+    destroy_person(node->data);
 
     // deallocate the node itself
     free(node);
@@ -174,7 +220,7 @@ void destory_linked_list_recursive(LLNode *node) {
 }
 
 
-void add_to_tail(LList *list, char *val) {
+void add_to_tail(LList *list, Person *val) {
     // if linked list is empty, then set
     // the head and tail
     if(list->head == NULL) {
@@ -213,9 +259,9 @@ int hash_function(HashTable *hash_table, char *str) {
 }
 
 
-void insert(HashTable *hash_table, char *str) {
+void insert(HashTable *hash_table, Person *data) {
     // hash the given string
-    int hash_value = hash_function(hash_table, str);
+    int hash_value = hash_function(hash_table, data->key);
 
     // check first if there is already a linked
     // list existing in this location, if none
@@ -224,11 +270,11 @@ void insert(HashTable *hash_table, char *str) {
         hash_table->table[hash_value] = create_linked_list();
 
     // add to tail at the hash_value's location
-    add_to_tail( hash_table->table[hash_value], str );
+    add_to_tail( hash_table->table[hash_value], data );
 }
 
 
-LLNode * search_table(HashTable *hash_table, char *str) {
+Person * search_table(HashTable *hash_table, char *str) {
     // this function searches a hash table
     // hash the given string
     int hash_value = hash_function(hash_table, str);
@@ -236,7 +282,11 @@ LLNode * search_table(HashTable *hash_table, char *str) {
     // check if there is a list first
     if(hash_table->table[hash_value] != NULL) {
         // do a search operation on a linked list
-        return linked_list_search(hash_table->table[hash_value], str);
+        LLNode *node = linked_list_search(hash_table->table[hash_value], str);
+
+        // return the person's data
+        if(node)
+            return node->data;
     }
 
     // it is not found
@@ -254,7 +304,7 @@ LLNode * linked_list_search(LList *list, char *str) {
         // if this node has data
         // that we are looking for
         // we are dealing with a string
-        if( strcmp(ptr->data, str) == 0 )
+        if( strcmp(ptr->data->key, str) == 0 )
             return ptr;
 
         // go to the next
@@ -262,4 +312,13 @@ LLNode * linked_list_search(LList *list, char *str) {
     }
 
     return NULL;
+}
+
+
+void display_person(Person *person) {
+    // helper function to just display
+    // the person's details
+    printf("ID: %s\n", person->key);
+    printf("Name: %s\n", person->name);
+    printf("Age: %d\n", person->age);
 }
