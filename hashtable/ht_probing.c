@@ -3,6 +3,7 @@
 #include <string.h>
 #define MAX_WORD_SIZE 255
 #define IS_LINEAR_PROBING 1
+#define DELETED_MARKER (PersonItem*) -1
 
 // Sample C Implementation of a hash table (open addressing).
 // This combines all the codes covered during the lecture.
@@ -34,6 +35,7 @@ int string_to_int(char *);
 int hash_function(HashTable *, int);
 void insert(HashTable *, PersonItem *);
 PersonItem * search_table(HashTable *, char *);
+PersonItem * delete_item(HashTable *, char *);
 int linear_probing(int, int, int);
 int quadratic_probing(int, int, int);
 void display_person(PersonItem *);
@@ -70,6 +72,19 @@ int main(void) {
     else {
         printf("No Record Found!\n");
     }
+
+    // delete a record
+    tmp = delete_item(hash_table, "bob123");
+
+    if(tmp) {
+        printf("Record Deleted!\n");
+
+        // deallocate the person
+        destroy_person(tmp);
+    }
+
+    // print the table
+    display_table(hash_table);
 
 
     // deallocate the table
@@ -137,6 +152,10 @@ PersonItem * create_person(char *key, char *name, int age) {
 
 
 void destroy_person(PersonItem *person) {
+    // if not an actual person
+    if(person == NULL || person == DELETED_MARKER)
+        return;
+
     // deallocate the strings
     free(person->key);
     free(person->name);
@@ -193,6 +212,7 @@ void insert(HashTable *hash_table, PersonItem *data) {
     int attempt = 0;
 
     // keep finding an empty space
+    // stop once we find one!
     while( hash_table->table[hash_value] != NULL ) {
         // this just prevents us from
         // entering an infinite loop
@@ -217,7 +237,7 @@ void insert(HashTable *hash_table, PersonItem *data) {
     // spot, so set the pointer at this location
     hash_table->table[hash_value] = data;
     // increment the size
-    hash_table->size = hash_table->size + 1;
+    hash_table->size++;
 }
 
 
@@ -235,7 +255,15 @@ PersonItem * search_table(HashTable *hash_table, char *str) {
     int attempt = 0;
 
     // start at the initial location
-    while( hash_table->table[hash_value] != NULL ) {
+    // a naive search would simply stop if we end
+    // up on a NULL slot; however, this would lead
+    // to a logical error when we delete an item
+    // that is in the middle of the chain formed
+    // by the probing sequence! therefore, we
+    // further check if this slot used to have an
+    // element so that we can continue looking
+    // and not prematurely terminate the search!
+    while( hash_table->table[hash_value] != NULL || hash_table->table[hash_value] != DELETED_MARKER ) {
         // this just prevents us from
         // entering an infinite loop
         // as a consequence of the choice
@@ -249,6 +277,77 @@ PersonItem * search_table(HashTable *hash_table, char *str) {
         // is this what we are looking for?
         if( strcmp(ptr->key, str) == 0 ) {
             // if it is, then return the person
+            return ptr;
+        }
+
+        // otherwise, we continue looking for
+        // the next possible location (probe)
+        if(IS_LINEAR_PROBING)
+            hash_value = linear_probing(initial_hash_value, attempt, hash_table->capacity);
+        else
+            hash_value = quadratic_probing(initial_hash_value, attempt, hash_table->capacity);
+
+        // increment counter
+        attempt++;
+    }
+
+    // once this point is reached, then
+    // it means that our search failed, therefore
+    // stop and the key is not found
+    return NULL;
+}
+
+
+PersonItem * delete_item(HashTable *hash_table, char *str) {
+    // this function deletes an item from a hash table
+    // however, it does not do the actual deallocation
+    // it must be done by the calling function
+    // convert the string to an int
+    int key = string_to_int(str);
+    // hash the given int
+    int hash_value = hash_function(hash_table, key);
+    // retain the initial hash value in case of collision
+    int initial_hash_value = hash_value;
+    // the following keeps track the number
+    // of attempts we looked at; it prevents
+    // infinite loops
+    int attempt = 0;
+
+    // start at the initial location
+    // a naive search would simply stop if we end
+    // up on a NULL slot; however, this would lead
+    // to a logical error when we delete an item
+    // that is in the middle of the chain formed
+    // by the probing sequence! therefore, we
+    // further check if this slot used to have an
+    // element so that we can continue looking
+    // and not prematurely terminate the search!
+    while( hash_table->table[hash_value] != NULL || hash_table->table[hash_value] != DELETED_MARKER ) {
+        // this just prevents us from
+        // entering an infinite loop
+        // as a consequence of the choice
+        // of the probing strategy
+        if(attempt == hash_table->capacity)
+            return NULL;
+
+        // a temporary person pointer
+        PersonItem *ptr = hash_table->table[hash_value];
+
+        // is this what we are looking for?
+        if( strcmp(ptr->key, str) == 0 ) {
+            // replace this location with the DELETED_MARKER
+            // to indicate that there used to be
+            // an element here; this will ensure
+            // our search will not break!
+            hash_table->table[hash_value] = DELETED_MARKER;
+
+            // decrement the size
+            hash_table->size--;
+
+            // the actual deallocation of this
+            // person will be done by the calling
+            // function and not here!
+            // return the person
             return ptr;
         }
 
@@ -307,7 +406,7 @@ void display_table(HashTable *hash_table) {
     // iterate through all the elements
     for(int i = 0; i < hash_table->capacity; i++) {
         // check if there is a list
-        if(hash_table->table[i])
+        if(hash_table->table[i] != NULL && hash_table->table[i] != DELETED_MARKER)
             // print the contents of this list
             display_person(hash_table->table[i]);
     }
