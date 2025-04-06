@@ -98,7 +98,7 @@ HashTable * create_hash_table(int capacity) {
     // pointers to LLNodes given capacity
     HashTable *hash_table = malloc(sizeof(HashTable));
 
-    // dynamically allocate this array of pointers to LLNode
+    // dynamically allocate this array of pointers to LList
     hash_table->table = malloc(sizeof(LList*) * capacity);
 
     // set all the pointers to NULL
