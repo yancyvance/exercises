@@ -94,6 +94,7 @@ HashTable * create_hash_table(int capacity) {
         hash_table->table[i] = NULL;
 
     hash_table->capacity = capacity;
+    hash_table->size = 0;
 
     return hash_table;
 }
@@ -174,6 +175,12 @@ int hash_function(HashTable *hash_table, int key) {
 
 
 void insert(HashTable *hash_table, PersonItem *data) {
+    // check first if there is enough space
+    if(hash_table->size == hash_table->capacity) {
+        printf("Error. Not enough space!\n");
+        return;
+    }
+
     // convert the string to an int
     int key = string_to_int(data->key);
     // hash the given int
@@ -184,12 +191,6 @@ void insert(HashTable *hash_table, PersonItem *data) {
     // of attempts we looked at; it prevents
     // infinite loops
     int attempt = 0;
-
-    // check first if there is enough space
-    if(hash_table->size == hash_table->capacity) {
-        printf("Error. Not enough space!\n");
-        return;
-    }
 
     // keep finding an empty space
     while( (attempt < hash_table->capacity) && (hash_table->table[hash_value] != NULL) ) {
@@ -208,6 +209,8 @@ void insert(HashTable *hash_table, PersonItem *data) {
     // it means we are able to find an available
     // spot, so set the pointer at this location
     hash_table->table[hash_value] = data;
+    // increment the size
+    hash_table->size = hash_table->size + 1;
 }
 
 
