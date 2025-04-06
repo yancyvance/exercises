@@ -193,7 +193,14 @@ void insert(HashTable *hash_table, PersonItem *data) {
     int attempt = 0;
 
     // keep finding an empty space
-    while( (attempt < hash_table->capacity) && (hash_table->table[hash_value] != NULL) ) {
+    while( hash_table->table[hash_value] != NULL ) {
+        // this just prevents us from
+        // entering an infinite loop
+        // as a consequence of the choice
+        // of the probing strategy
+        if(attempt == hash_table->capacity)
+            return;
+
         // go to the next space then apply
         // the hash function again
         if(IS_LINEAR_PROBING)
@@ -228,7 +235,14 @@ PersonItem * search_table(HashTable *hash_table, char *str) {
     int attempt = 0;
 
     // start at the initial location
-    while( (attempt < hash_table->capacity) && (hash_table->table[hash_value] != NULL) ) {
+    while( hash_table->table[hash_value] != NULL ) {
+        // this just prevents us from
+        // entering an infinite loop
+        // as a consequence of the choice
+        // of the probing strategy
+        if(attempt == hash_table->capacity)
+            return NULL;
+
         // a temporary person pointer
         PersonItem *ptr = hash_table->table[hash_value];
 
