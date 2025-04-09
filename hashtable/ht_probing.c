@@ -8,7 +8,7 @@
 // Sample C Implementation of a hash table (open addressing).
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-04-06.
+// This code was last updated on 2025-04-09.
 
 
 typedef struct PersonItem_s {
@@ -38,6 +38,7 @@ PersonItem * search_table(HashTable *, char *);
 PersonItem * delete_item(HashTable *, char *);
 int linear_probing(int, int, int);
 int quadratic_probing(int, int, int);
+int is_location_available(PersonItem *);
 void display_person(PersonItem *);
 void display_table(HashTable *);
 
@@ -211,9 +212,9 @@ void insert(HashTable *hash_table, PersonItem *data) {
     // infinite loops
     int attempt = 0;
 
-    // keep finding an empty space
+    // keep finding an available location
     // stop once we find one!
-    while( hash_table->table[hash_value] != NULL ) {
+    while( !(is_location_available(hash_table->table[hash_value])) ) {
         // this just prevents us from
         // entering an infinite loop
         // as a consequence of the choice
@@ -263,7 +264,7 @@ PersonItem * search_table(HashTable *hash_table, char *str) {
     // further check if this slot used to have an
     // element so that we can continue looking
     // and not prematurely terminate the search!
-    while( hash_table->table[hash_value] != NULL || hash_table->table[hash_value] != DELETED_MARKER ) {
+    while( !(is_location_available(hash_table->table[hash_value])) ) {
         // this just prevents us from
         // entering an infinite loop
         // as a consequence of the choice
@@ -322,7 +323,7 @@ PersonItem * delete_item(HashTable *hash_table, char *str) {
     // further check if this slot used to have an
     // element so that we can continue looking
     // and not prematurely terminate the search!
-    while( hash_table->table[hash_value] != NULL || hash_table->table[hash_value] != DELETED_MARKER ) {
+    while( !(is_location_available(hash_table->table[hash_value])) ) {
         // this just prevents us from
         // entering an infinite loop
         // as a consequence of the choice
@@ -389,6 +390,20 @@ int quadratic_probing(int loc, int i, int capacity) {
     // location; it wraps-around based on
     // the capacity of the table
     return ( loc+(i*i) ) % capacity;
+}
+
+
+int is_location_available(PersonItem *loc) {
+    // helper function that checks whether
+    // a given slot of the hash table is
+    // available; a slot is available
+    // if it currently is NULL or if it is
+    // the DELETED_MARKER (currently empty
+    // but used to have a value)
+    // note: the parameter is an element
+    // of a dynamic array which is a pointer
+    // to a person in our example
+    return (loc == NULL || loc == DELETED_MARKER);
 }
 
 
