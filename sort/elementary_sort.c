@@ -4,7 +4,7 @@
 // Sample C Implementation of elementary sorting algorithms.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-04-08.
+// This code was last updated on 2025-04-09.
 
 
 // function prototypes
