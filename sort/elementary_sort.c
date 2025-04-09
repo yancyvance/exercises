@@ -10,6 +10,7 @@
 // function prototypes
 void selection_sort(int *, int);
 void insertion_sort(int *, int);
+void bubble_sort(int *, int);
 void swap(int *, int *);
 void print_array(int *, int);
 
@@ -25,6 +26,9 @@ int main(void) {
 
     // insertion sort
     //insertion_sort(nums, ELEMENT_COUNT);
+
+    // bubble sort
+    bubble_sort(nums, ELEMENT_COUNT);
 
     // print the array after sorting
     print_array(nums, ELEMENT_COUNT);
@@ -71,6 +75,7 @@ void selection_sort(int *arr, int size) {
             swap(&arr[i], &arr[min_idx]);
         }
 
+        // inspect the array
         printf("\t");
         print_array(arr, size);
     }
@@ -113,6 +118,47 @@ void insertion_sort(int *arr, int size) {
         // we now found the correct location
         arr[j+1] = tmp;
 
+        // inspect the array
+        printf("\t");
+        print_array(arr, size);
+    }
+}
+
+
+void bubble_sort(int *arr, int size) {
+    // the idea is that we want to "bubble down"
+    // or push down heavier items to the right side
+    // and we keep on doing this for size-1 times
+    // because for each round, the heaviest value
+    // of the unsorted part will end up to its
+    // correct location, thereby becoming sorted;
+    // the sorted part will be located on the
+    // right side while the unsorted part will
+    // be on the left side; thus the size of the
+    // unsorted part gets smaller because for
+    // each iteration of the loop, we end
+    // up sorting one new element
+    for(int i = 0; i < size-1; i++) {
+        // for this round, bubble down the
+        // current heaviest element in the sorted
+        // part so that it ends up being in
+        // the unsorted part (the first of the
+        // the sorted part); thus you only need
+        // to run this all the way until
+        // you reach the sorted part
+        for(int j = 0; j < size-1-i; j++) {
+            // check if the current element
+            // is not on its current location
+            // relative to its right element
+            // in short, the current element
+            // is heavier than its right element
+            if(arr[j] > arr[j+1]) {
+                // swap the two elements
+                swap(&arr[j], &arr[j+1]);
+            }
+        }
+
+        // inspect the array
         printf("\t");
         print_array(arr, size);
     }
