@@ -101,11 +101,11 @@ int find_max(int nums[], int size) {
     // elements are distinct
 
     // we assume that the first element
-    // is the min element
+    // is the max element
     int max_idx = 0;
     for(int i = 1; i < size; i++) {
         // if the value at this location turns
-        // out to be lower than the current min
+        // out to be lower than the current max
         if(nums[i] > nums[max_idx]) {
             // we update our tracker
             max_idx = i;
