@@ -421,7 +421,7 @@ void display_table(HashTable *hash_table) {
     // iterate through all the elements
     for(int i = 0; i < hash_table->capacity; i++) {
         // check if there is a list
-        if(hash_table->table[i] != NULL && hash_table->table[i] != DELETED_MARKER)
+        if( !(is_location_available(hash_table->table[i])) )
             // print the contents of this list
             display_person(hash_table->table[i]);
     }
