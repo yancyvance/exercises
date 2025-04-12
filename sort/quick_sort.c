@@ -9,6 +9,7 @@
 
 // function prototypes
 void quicksort(int *, int, int);
+int partition(int *, int, int);
 void swap(int *, int *);
 void print_array(int *, int);
 
@@ -39,7 +40,39 @@ void quicksort(int *arr, int start, int end) {
 
     // Part 1: Divide
     // logically partition the array
-    // around a pivot
+    // around a pivot,
+
+    // re-arrange the elements around
+    // a pivot and determine the location
+    // of the pivot (divider)
+    int div_idx = partition(arr, start, end);
+
+
+    // Part 2: Conquer
+    // recursively sort the left
+    // and right partitions; notice
+    // that the partition is not part
+    // of the two sub-arrays
+
+    // we quicksort the left side sub-array
+    quicksort(arr, start, div_idx-1);
+    // we quicksort the right side sub-array
+    quicksort(arr, div_idx+1, end);
+
+
+    // Part 3: Combine
+    // this is implied as a consequence
+    // of the process performed above
+}
+
+
+int partition(int *arr, int start, int end) {
+    // this function receives an array which
+    // logically partitions; it does this
+    // by re-arranging the elements based
+    // on a pivot; afterward, it returns
+    // the index in which the pivot was
+    // placed in the end
 
     // find the index of the pivot; for our
     // approach, we assume it is the last element
@@ -80,22 +113,10 @@ void quicksort(int *arr, int start, int end) {
     // at div_idx
     swap(&arr[pivot_idx], &arr[div_idx]);
 
-
-    // Part 2: Conquer
-    // recursively sort the left
-    // and right partitions; notice
-    // that the partition is not part
-    // of the two sub-arrays
-
-    // we quicksort the left side sub-array
-    quicksort(arr, start, div_idx-1);
-    // we quicksort the right side sub-array
-    quicksort(arr, div_idx+1, end);
-
-
-    // Part 3: Combine
-    // this is implied as a consequence
-    // of the process performed above
+    // return the index where the pivot
+    // is now located (the divider), which
+    // is currently at div_idx
+    return div_idx;
 }
 
 
