@@ -5,7 +5,7 @@
 // Sample C Implementation of merge sort.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-04-10.
+// This code was last updated on 2025-04-12.
 
 
 // function prototypes
@@ -47,13 +47,18 @@ void mergesort(int *arr, int start, int end) {
     // that the left side will be shorter
     int mid = (start+end-1) / 2;
 
-    // left side
+
+    // Part 2: Conquer
+    // recursively sort the left
+    // and right sub-arrays;
+
+    // we mergesort the left side sub-array
     mergesort(arr, start, mid);
-    // right side
+    // we mergesort the right side sub-array
     mergesort(arr, mid+1, end);
 
 
-    // Part 2: Conquer
+    // Part 3: Combine
     // merge the two logical sub-arrays by
     // providing the start-end indices of the
     // left and the right sub-arrays
