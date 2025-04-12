@@ -8,7 +8,7 @@
 
 
 // function prototypes
-void quicksort(int *arr, int start, int end);
+void quicksort(int *, int, int);
 void swap(int *, int *);
 void print_array(int *, int);
 
