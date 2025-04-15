@@ -42,7 +42,6 @@ int main(void) {
     // read the size of the first list
     int N;
     fscanf(input_file, "%d", &N);
-    printf("%d\n", N);
 
     // temporary variables
     int x, y;
@@ -64,12 +63,10 @@ int main(void) {
             add_to_tail(ptr1, create_node(x, y));
     }
 
-    print_list(ptr1);
 
     // read the size of the second list
     int M;
     fscanf(input_file, "%d", &M);
-    printf("%d\n", M);
 
     // pointer to the head of the second linked list
     Node *ptr2 = NULL;
@@ -87,8 +84,6 @@ int main(void) {
         else
             add_to_tail(ptr2, create_node(x, y));
     }
-
-    print_list(ptr2);
 
     // close the file
     fclose(input_file);
@@ -184,7 +179,7 @@ void print_list(Node *node) {
 
     while(ptr != NULL) {
         // print the current node
-        printf("(%d %d)\n", ptr->x, ptr->y);
+        printf("(%d, %d)\n", ptr->x, ptr->y);
 
         // go to the next node
         ptr = ptr->next;
