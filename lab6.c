@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define MAX_SIZE 256
+#define GRADE_COUNT 3
 #define INPUT_FILE_NAME "students.txt"
 
 // COP 3223C Spring 2025
@@ -13,7 +14,7 @@
 
 typedef struct Student_s {
     char name[MAX_SIZE];
-    double grades[3];
+    double grades[GRADE_COUNT];
 } Student;
 
 
@@ -102,18 +103,11 @@ int main(void) {
 
 void set_student(Student *p, char name[], double g1, double g2, double g3) {
     // TODO 1 START
-    // TODO 1: This function accepts a pointer to a
-    // Student, a string, and 3 floating point
-    // numbers that corresponds to the 3 grades
-    // of this student. This function simply
-    // assigns these values to the corresponding
-    // fields or member of the current student.
-    // Note that the 3 grades must be
-    // assigned to the grades array of the student
-    // in the same order that it is
-    // received by the function. In short,
-    // g1 will be the first element of the grades
-    // array, followed by g2, then g3.
+    // TODO 1: This function takes a pointer to a Student, a string (the student's name),
+    // and three floating-point numbers representing the student's grades.
+    // It assigns the name and grades to the corresponding fields in the Student struct.
+    // The grades must be stored in the grades array in the order received:
+    // g1 at index 0, g2 at index 1, and g3 at index 2.
 
 
 
@@ -125,9 +119,8 @@ void set_student(Student *p, char name[], double g1, double g2, double g3) {
 
 double compute_average(Student *p) {
     // TODO 2 START
-    // TODO 2: This function accepts a pointer to a
-    // Student. It returns the average of the
-    // 3 grades of the student.
+    // TODO 2: This function takes a pointer to a Student
+    // and returns the average of the student's three grades.
 
 
 
@@ -139,15 +132,10 @@ double compute_average(Student *p) {
 
 void introduce(Student *p) {
     // TODO 3 START
-    // TODO 3: This function accepts a pointer to a
-    // Student. It then prints in one line the name
-    // of the student followed by their average
-    // grade in the following format: [name] [average]
-    // Format the average grade such that there
-    // is always 2 digits to the right of the decimal
-    // point. Follow the rules of rounding-off numbers.
-    // To receive credit, you must call the
-    // compute_average() function from here.
+    // TODO 3: This function takes a pointer to a Student and prints the student's name
+    // followed by their average grade on a single line in the format: [name] [average].
+    // The average must be displayed with exactly two decimal places, using standard rounding rules.
+    // To receive credit, make sure to call the compute_average() function within this function.
 
 
 
