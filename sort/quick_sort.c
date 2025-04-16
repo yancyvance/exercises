@@ -4,7 +4,7 @@
 // Sample C Implementation of quick sort.
 // This combines all the codes covered during the lecture.
 // Please report any bug you may find.
-// This code was last updated on 2025-04-12.
+// This code was last updated on 2025-04-16.
 
 
 // function prototypes
@@ -94,8 +94,8 @@ int partition(int *arr, int start, int end) {
     // traverse from start to end-1
     for(int i = start; i < end; i++) {
         // is the current element less
-        // than the pivot?
-        if(arr[i] < arr[pivot_idx]) {
+        // than or equal to the pivot?
+        if(arr[i] <= arr[pivot_idx]) {
             // swap the current element
             // with the leftmost element
             // in the right sub-array
