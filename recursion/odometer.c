@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #define NUM_COUNT 4
 
+// Sample C Implementation of solution to odometer problem.
+// This combines all the codes covered during the lecture.
+// Please report any bug you may find.
+// This code was last updated on 2025-04-18.
+
+
 // function prototypes
 int solve(int *res, int, int);
 int check_solution(int *, int);
