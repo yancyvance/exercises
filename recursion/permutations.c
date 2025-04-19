@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #define NAME_COUNT 3
 
+// Sample C Implementation of solution to permutation problem.
+// This combines all the codes covered during the lecture.
+// Please report any bug you may find.
+// This code was last updated on 2025-04-18.
+
+
 // function prototypes
 void solve(char *, int, int, char *, int *);
 void print_array(char *, int);
